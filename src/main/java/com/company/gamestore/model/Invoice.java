@@ -1,7 +1,6 @@
 package com.company.gamestore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -62,6 +61,7 @@ public class Invoice {
 
     @NotNull
     private BigDecimal total;
+
 
 
     public int getInvoiceId() {
@@ -214,4 +214,5 @@ public class Invoice {
                 getProcessingFee(),
                 getTotal());
     }
+
 }
