@@ -1,4 +1,4 @@
-package com.company.gamestore.model;
+package com.company.gamestore.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
