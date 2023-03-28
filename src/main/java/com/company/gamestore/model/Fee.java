@@ -3,7 +3,10 @@ package com.company.gamestore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -15,10 +18,13 @@ public class Fee implements Serializable {
 
     @Id
     @Column(name = "product_type")
+    @Size(max = 50, message = "Product type value can not be larger than 50 characters")
     // @GeneratedValue(strategy = GenerationType.AUTO)
     private String productType;
 
     @NotNull
+    @DecimalMin(value = "0.00", inclusive = true, message = "Fee cannot be less than 0.00")
+    @Digits(integer = 6, fraction = 2, message = "The fee can have a total of 8 numbers WITH 2 of them being after the decimal") // Got from this https://stackoverflow.com/questions/65490099/how-to-use-digits-validation-on-integer-value
     private BigDecimal fee;
 
     public Fee() {
