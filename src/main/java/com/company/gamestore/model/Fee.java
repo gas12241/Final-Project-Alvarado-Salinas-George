@@ -11,11 +11,19 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * Fee Class that Models the information you can get
+ * from the "fee" table in the Database
+ */
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "fee")
 public class Fee implements Serializable {
 
+    /**
+     * Fee Objects have a Key of type String named "product_type"
+     * that can't be longer than 50 characters.
+     */
     @Id
     @Column(name = "product_type")
     @Size(max = 50, message = "Product type value can not be larger than 50 characters")
@@ -27,25 +35,52 @@ public class Fee implements Serializable {
     @Digits(integer = 6, fraction = 2, message = "The fee can have a total of 8 numbers WITH 2 of them being after the decimal") // Got from this https://stackoverflow.com/questions/65490099/how-to-use-digits-validation-on-integer-value
     private BigDecimal fee;
 
+    /**
+     * Empty constructor. Instance variables will be set later.
+     */
     public Fee() {
     }
 
+    /**
+     * Getter for the productType(Id) of the Fee Object.
+     * @return Returns a String, the productType of the Fee Object.
+     */
     public String getProductType() {
         return productType;
     }
 
+    /**
+     * Setter for the productType(Id) of the Fee Object.
+     * @param productType Takes in a String that will be used to set
+     *                    the productType of the Fee Object.
+     */
     public void setProductType(String productType) {
         this.productType = productType;
     }
 
+    /**
+     * Getter for the fee of the Fee Object.
+     * @return Returns a BigDecimal, the fee of the Fee Object.
+     */
     public BigDecimal getFee() {
         return fee;
     }
 
+    /**
+     * Setter for the fee of the Fee Object.
+     * @param fee Takes in a String that will be used to
+     *            set the fee of the Fee Object.
+     */
     public void setFee(BigDecimal fee) {
         this.fee = fee;
     }
 
+    /**
+     * equals() for the Fee Object.
+     * @param o Object o which will be used for comparison.
+     * @return Returns true if the object calling this method is
+     *         equal to the inputted Object. False otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,11 +89,19 @@ public class Fee implements Serializable {
         return Objects.equals(getProductType(), fee1.getProductType()) && Objects.equals(getFee(), fee1.getFee());
     }
 
+    /**
+     * hashCode() for the Fee Object. Will be used to test for equality.
+     * @return Returns the Fee Object in int form.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getProductType(), getFee());
     }
 
+    /**
+     * toString() for the Fee Object. Will be used to test for equality.
+     * @return Returns the Fee Object in String form.
+     */
     @Override
     public String toString() {
         return "Fee{" +
