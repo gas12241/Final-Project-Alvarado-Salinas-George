@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TshirtController {
@@ -28,6 +29,13 @@ public class TshirtController {
     public List<Tshirt> getTshirts() {
         List<Tshirt> tshirts =  tshirtRepository.findAll();
         return tshirts;
+    }
+    @GetMapping(path = "/tshirt/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public Tshirt getTshirtById(@PathVariable int id) {
+       Optional<Tshirt> tshirt = tshirtRepository.findById(id);
+       if (tshirt.isPresent()) return tshirt.get();
+       return null;
     }
 
     @PostMapping(path = "/tshirt")
