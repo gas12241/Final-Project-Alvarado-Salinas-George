@@ -1,0 +1,40 @@
+type Console {
+    console_id: ID
+    model: String
+    manufacturer: String
+    memory_amount: String
+    processor: String
+    price: Float
+    quantity: Int
+}
+
+type Game {
+    game_id: ID
+    title: String
+    esrb_rating: String
+    description: String
+    decimal: Float
+    studio: String
+    quantity: Int
+}
+
+type Query {
+    # Get all Games
+
+    # Get Game by Id
+
+    # Get a Game by Title
+
+    # Get a Game by ESRB Rating
+
+    # Get a Game by studio
+
+    # Get all Consoles
+    consoles: [Console]!
+
+    # Get a Console by Id
+    findConsoleById(console_id:ID):Console
+
+    # Get a Console by Manufacturer
+    findConsoleByManufacturer(manufacturer:String):[Console]
+}
