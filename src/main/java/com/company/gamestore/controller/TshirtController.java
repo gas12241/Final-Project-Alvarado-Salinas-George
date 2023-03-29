@@ -17,12 +17,12 @@ public class TshirtController {
     @GetMapping(path = "/tshirt/{color}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<Tshirt> getTshirtByColor(@PathVariable String color) {
-        return tshirtRepository.findByColor();
+        return tshirtRepository.findByColor(color);
     }
     @GetMapping(path = "/tshirt/{size}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<Tshirt> getTshirtBySize(@PathVariable String size) {
-        return tshirtRepository.findBySize();
+        return tshirtRepository.findBySize(size);
     }
     @GetMapping(path = "/tshirt")
     @ResponseStatus(value = HttpStatus.OK)
