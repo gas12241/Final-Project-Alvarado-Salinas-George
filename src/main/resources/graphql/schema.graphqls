@@ -20,14 +20,19 @@ type Game {
 
 type Query {
     # Get all Games
+    games: [Game]!
 
     # Get Game by Id
+    findGameById(game_id:ID):Game
 
-    # Get a Game by Title
+    # Get Games by Title
+    findGamesByTitle(title:String):[Game]
 
-    # Get a Game by ESRB Rating
+    # Get Games by ESRB Rating
+    findGamesByEsrbRating(esrb_rating:String):[Game]
 
-    # Get a Game by studio
+    # Get Games by studio
+    findGamesByStudio(studio:String):[Game]
 
     # Get all Consoles
     consoles: [Console]!
@@ -36,5 +41,5 @@ type Query {
     findConsoleById(console_id:ID):Console
 
     # Get a Console by Manufacturer
-    findConsoleByManufacturer(manufacturer:String):[Console]
+    findConsolesByManufacturer(manufacturer:String):[Console]
 }

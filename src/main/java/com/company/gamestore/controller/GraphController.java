@@ -1,6 +1,7 @@
 package com.company.gamestore.controller;
 
 import com.company.gamestore.model.Console;
+import com.company.gamestore.model.Game;
 import com.company.gamestore.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -19,19 +20,32 @@ public class GraphController {
     ConsoleRepository consoleRepo;
 
     @Autowired
-    FeeRepository feeRepo;
+    GameRepository gameRepo;
 
-//    @Autowired
-//    GameRepository gameRepo;
+    @QueryMapping
+    public List<Game> games() {
+        return gameRepo.findAll();
+    }
 
-    @Autowired
-    InvoiceRepository invoiceRepo;
+    @QueryMapping
+    public Optional<Game> findGameById(@Argument Integer game_id) {
+        return gameRepo.findById(game_id);
+    }
 
-    @Autowired
-    TaxRepository taxRepo;
+    @QueryMapping
+    public List<Game> findGamesByTitle(@Argument String title) {
+        return gameRepo.findByTitle(title);
+    }
 
-    @Autowired
-    TshirtRepository tshirtRepo;
+    @QueryMapping
+    public List<Game> findGamesByEsrbRating(@Argument String esrb_rating) {
+        return gameRepo.findByEsrbRating(esrb_rating);
+    }
+
+    @QueryMapping
+    public List<Game> findGamesByStudio(@Argument String studio) {
+        return gameRepo.findByStudio(studio);
+    }
 
     @QueryMapping
     public List<Console> consoles() {
@@ -45,8 +59,6 @@ public class GraphController {
 
     @QueryMapping
     public List<Console> findConsolesByManufacturer(@Argument String manufacturer) {
-        // List<Console> consolesByManufacturer = new ArrayList<>();
         return consoleRepo.findByManufacturer(manufacturer);
     }
-
 }
