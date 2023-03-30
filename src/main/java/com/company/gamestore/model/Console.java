@@ -4,34 +4,35 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "console")
-public class Console {
+public class Console implements Serializable {
 
     @Id
     @Column(name = "console_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull(message = "Console_id cannot be null.")
     private Integer console_id;
 
-    @NotNull
+    @NotNull(message = "Model cannot be null.")
     private String model;
 
-    @NotNull
+    @NotNull(message = "Manufacturer cannot be null.")
     private String manufacturer;
 
     private String memory_amount;
 
     private String processor;
 
-    @NotNull
+    @NotNull(message = "Price cannot be null.")
     private BigDecimal price;
 
-    @NotNull
+    @NotNull(message = "Quantity cannot be null.")
     private Integer quantity;
 
     public Integer getConsole_id() {
