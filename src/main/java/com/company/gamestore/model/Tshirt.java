@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -29,7 +30,7 @@ public class Tshirt implements Serializable {
     private String description;
     @NotNull
     @DecimalMin(value = "0.00", inclusive = true, message = "Price cannot be null and must be at least 0.00")
-    private float price;
+    private BigDecimal price;
     @NotNull(message = "You must supply a value for quantity.")
     private int quantity;
 
@@ -49,7 +50,7 @@ public class Tshirt implements Serializable {
         return description;
     }
 
-    public float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -73,7 +74,7 @@ public class Tshirt implements Serializable {
         this.description = description;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -97,12 +98,12 @@ public class Tshirt implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Tshirt tShirt = (Tshirt) o;
-        return tshirtId == tShirt.tshirtId && Float.compare(tShirt.price, price) == 0 && quantity == tShirt.quantity && Objects.equals(size, tShirt.size) && Objects.equals(color, tShirt.color) && Objects.equals(description, tShirt.description);
+        Tshirt tshirt = (Tshirt) o;
+        return getTshirtId() == tshirt.getTshirtId() && getQuantity() == tshirt.getQuantity() && Objects.equals(getSize(), tshirt.getSize()) && Objects.equals(getColor(), tshirt.getColor()) && Objects.equals(getDescription(), tshirt.getDescription()) && Objects.equals(getPrice(), tshirt.getPrice());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tshirtId, size, color, description, price, quantity);
+        return Objects.hash(getTshirtId(), getSize(), getColor(), getDescription(), getPrice(), getQuantity());
     }
 }
