@@ -26,7 +26,7 @@ public class Tshirt implements Serializable {
     @Size(max = 20, message = "Color can not larger than 20 characters.")
     private String color;
     @NotEmpty(message = "You must supply a value for description.")
-    @Size(max = 20, message = "Description can not larger than 255 characters.")
+    @Size(max = 255, message = "Description can not larger than 255 characters.")
     private String description;
     @NotNull
     @DecimalMin(value = "0.00", inclusive = true, message = "Price cannot be null and must be at least 0.00")
