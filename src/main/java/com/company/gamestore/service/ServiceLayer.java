@@ -23,6 +23,8 @@ public class ServiceLayer {
     private InvoiceRepository invoiceRepository;
 
     enum ItemType {console, tshirt, game};
+    public static final BigDecimal additionalProcessingFee = BigDecimal.valueOf(15.49);
+    public static final int QUANTITY = 10;
 
 
     @Autowired
@@ -98,7 +100,14 @@ public class ServiceLayer {
             throw new Exception("We don't have so many items!");
         } else {
             BigDecimal subtotal = invoice.getUnitPrice().multiply(BigDecimal.valueOf(invoiceViewModel.getQuantity()));
-            BigDecimal total = calculateTotal(subtotal, invoice.getQuantity());
+            BigDecimal taxRate = taxRepository.findTaxByState(invoice.getState()).get().getRate();
+            BigDecimal processingPrice = feeRepository.findFeeByProductType(invoice.getItemType()).get().getFee();
+            BigDecimal total = calculateTotal(subtotal, taxRate,invoice.getQuantity(), processingPrice);
+
+            BigDecimal tax = subtotal.multiply(BigDecimal.valueOf(1).add(taxRate));
+            invoice.setProcessingFee(processingPrice);
+
+            invoice.setTax(tax);
             invoice.setTotal(total);
             invoice.setSubtotal(subtotal);
         }
@@ -106,12 +115,13 @@ public class ServiceLayer {
         // save invoice and return
         invoice = invoiceRepository.save(invoice);
         return invoice;
-
     }
 
-    private BigDecimal calculateTotal(BigDecimal subtotal, int quantity) {
-        // TODO
-        return BigDecimal.valueOf(1);
+    private BigDecimal calculateTotal(BigDecimal subtotal, BigDecimal tax, int quantity, BigDecimal processingPrice) {
+        BigDecimal total = subtotal.add(tax);
+        total.add(processingPrice);
+        if (quantity > QUANTITY) total.add(additionalProcessingFee);
+        return total;
     }
 
 }
