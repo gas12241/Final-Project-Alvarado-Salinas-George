@@ -18,24 +18,22 @@ public class InvoiceController {
     @Autowired
     ServiceLayer serviceLayer;
 
-    @GetMapping(path = "")
+    @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     public List<Invoice> getAllInvoices() {
         return invoiceRepository.findAll();
     }
 
-    @GetMapping(path = "")
+    @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     public List<Invoice> getInvoiceByName(@PathVariable String name) {
         return invoiceRepository.findInvoiceByName(name);
     }
 
-    @PostMapping(path = "")
+    @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createInvoice(@RequestBody InvoiceViewModel invoiceViewModel) throws Exception {
         serviceLayer.createInvoice(invoiceViewModel);
     }
-
-
 
 }

@@ -22,6 +22,8 @@ public class ServiceLayer {
     private TshirtRepository tshirtRepository;
     private InvoiceRepository invoiceRepository;
 
+    enum ItemType {console, tshirt, game};
+
 
     @Autowired
     public ServiceLayer(ConsoleRepository consoleRepository,
@@ -37,6 +39,82 @@ public class ServiceLayer {
         this.tshirtRepository = tshirtRepository;
         this.invoiceRepository = invoiceRepository;
     }
+    @Transactional
+    public Invoice createInvoice(InvoiceViewModel invoiceViewModel) throws Exception {
+        Invoice invoice = new Invoice();
+        invoice.setName(invoiceViewModel.getName());
+        invoice.setStreet(invoiceViewModel.getStreet());
+        invoice.setState(invoiceViewModel.getState());
+        invoice.setCity(invoiceViewModel.getCity());
+        invoice.setZipcode(invoiceViewModel.getZipcode());
+        invoice.setItemType(invoiceViewModel.getItemType());
+        invoice.setItemId(invoiceViewModel.getItemId());
+        invoice.setQuantity(invoiceViewModel.getQuantity());
+
+        // Set invoice tax
+        Optional<Tax> resStateTax = taxRepository.findById(invoice.getState());
+        if (!resStateTax.isPresent()) {
+            throw new Exception("Invalid State");
+        }
+        invoice.setTax(resStateTax.get().getRate());
+
+        // Set processing fee
+        Optional<Fee> resFee = feeRepository.findById(invoice.getItemType());
+        if (!resFee.isPresent()) {
+            throw new Exception("Invalid ItemType");
+        }
+        invoice.setProcessingFee(resFee.get().getFee());
+
+        // check if quantity is available
+        int quantity = 0;
+        switch (ItemType.valueOf(invoice.getItemType())) {
+            case console:
+                Optional<Console> console = consoleRepository.findById(invoiceViewModel.getItemId());
+                if (console.isPresent()) {
+                    quantity = console.get().getQuantity();
+                    invoice.setUnitPrice(console.get().getPrice());
+                }
+                break;
+            case tshirt:
+                Optional<Tshirt> tshirt = tshirtRepository.findById(invoiceViewModel.getItemId());
+                if (tshirt.isPresent()) {
+                    quantity = tshirt.get().getQuantity();
+                    invoice.setUnitPrice(tshirt.get().getPrice());
+                }
+                break;
+            case game:
+                Optional<Game> game = gameRepository.findById(invoiceViewModel.getItemId());
+                if (game.isPresent()) {
+                    quantity = game.get().getQuantity();
+                    invoice.setUnitPrice(invoice.getUnitPrice());
+                }
+                break;
+            default:
+                throw new Exception("Invalid ItemType");
+        }
+
+        // Calculate subtotal and total
+        if (quantity < invoiceViewModel.getQuantity()) {
+            throw new Exception("We don't have so many items!");
+        } else {
+            BigDecimal subtotal = invoice.getUnitPrice().multiply(BigDecimal.valueOf(invoiceViewModel.getQuantity()));
+            BigDecimal total = calculateTotal(subtotal, invoice.getQuantity());
+            invoice.setTotal(total);
+            invoice.setSubtotal(subtotal);
+        }
+
+        // save invoice and return
+        invoice = invoiceRepository.save(invoice);
+        return invoice;
+
+    }
+
+    private BigDecimal calculateTotal(BigDecimal subtotal, int quantity) {
+        // TODO
+        return BigDecimal.valueOf(1);
+    }
+
+
 
     @Transactional
     public Invoice saveInvoice(Invoice invoice) {
@@ -94,50 +172,5 @@ public class ServiceLayer {
         invoiceRepository.save(invoice);
 
         return invoice;
-    }
-
-    public List<Invoice> findInvoiceByCustomerName(String name) {
-        return invoiceRepository.findInvoiceByName(name);
-    }
-
-
-    public Invoice createInvoice(InvoiceViewModel invoiceViewModel) throws Exception {
-        Invoice invoice = new Invoice();
-        invoice.setName(invoiceViewModel.getName());
-        invoice.setStreet(invoiceViewModel.getStreet());
-        invoice.setState(invoiceViewModel.getState());
-        invoice.setCity(invoiceViewModel.getCity());
-        invoice.setZipcode(invoiceViewModel.getZipcode());
-        invoice.setItemType(invoiceViewModel.getItemType());
-        invoice.setItemId(invoiceViewModel.getItemId());
-        invoice.setQuantity(invoiceViewModel.getQuantity());
-
-        // Set invoice tax
-        Optional<Tax> resStateTax = taxRepository.findById(invoice.getState());
-        if (!resStateTax.isPresent()) {
-            throw new Exception("Invalid State");
-        }
-        invoice.setTax(resStateTax.get().getRate());
-
-        // Set processing fee
-        Optional<Fee> resFee = feeRepository.findById(invoice.getItemType());
-        if (!resFee.isPresent()) {
-            throw new Exception("Invalid ItemType");
-        }
-        invoice.setProcessingFee(resFee.get().getFee());
-
-
-        // Calculate subtotal
-
-
-        // save invoice and return
-        invoice = invoiceRepository.save(invoice);
-        return invoice;
-
-    }
-
-    private BigDecimal calculateSubtotal() {
-        // TODO
-        return BigDecimal.valueOf(1);
     }
 }
