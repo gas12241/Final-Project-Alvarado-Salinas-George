@@ -36,7 +36,7 @@ public class TshirtRepositoryTest {
         Tshirt tshirt = new Tshirt();
         tshirt.setColor("green");
         tshirt.setDescription("nike t-shirt for children");
-        tshirt.setPrice(12);
+        tshirt.setPrice(BigDecimal.valueOf(12));
         tshirt.setSize("large");
         tshirt.setQuantity(100);
         tshirt = tshirtRepository.save(tshirt);
