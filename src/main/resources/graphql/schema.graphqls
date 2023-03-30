@@ -9,9 +9,9 @@ type Console {
 }
 
 type Game {
-    game_id: ID
+    gameId: ID
     title: String
-    esrb_rating: String
+    esrbRating: String
     description: String
     decimal: Float
     studio: String
