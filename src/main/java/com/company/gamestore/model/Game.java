@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -11,48 +12,38 @@ import java.util.Set;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="game")
-public class Game {
+public class Game implements  Serializable {
     @Id
     @Column(name = "game_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int game_id;
+    private int gameId;
 
     @NotNull
     private String title;
 
     @NotNull
-    private String esrb_rating;
+    private String esrbRating;
+
+    @NotNull
+    private BigDecimal price;
 
     @NotNull
     private String description;
 
     @NotNull
-    private float decimal;
+    private BigDecimal decimal;
 
     @NotNull
     private String studio;
 
     private int quantity;
 
-    public Game() {
+    public int getGameId() {
+        return gameId;
     }
 
-    public Game(int game_id, String title, String esrb_rating, String description, float decimal, String studio, int quantity) {
-        this.game_id = game_id;
-        this.title = title;
-        this.esrb_rating = esrb_rating;
-        this.description = description;
-        this.decimal = decimal;
-        this.studio = studio;
-        this.quantity = quantity;
-    }
-
-    public int getGame_id() {
-        return game_id;
-    }
-
-    public void setGame_id(int game_id) {
-        this.game_id = game_id;
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 
     public String getTitle() {
@@ -63,12 +54,20 @@ public class Game {
         this.title = title;
     }
 
-    public String getEsrb_rating() {
-        return esrb_rating;
+    public String getEsrbRating() {
+        return esrbRating;
     }
 
-    public void setEsrb_rating(String esrb_rating) {
-        this.esrb_rating = esrb_rating;
+    public void setEsrbRating(String esrbRating) {
+        this.esrbRating = esrbRating;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getDescription() {
@@ -79,11 +78,11 @@ public class Game {
         this.description = description;
     }
 
-    public float getDecimal() {
+    public BigDecimal getDecimal() {
         return decimal;
     }
 
-    public void setDecimal(float decimal) {
+    public void setDecimal(BigDecimal decimal) {
         this.decimal = decimal;
     }
 
@@ -106,13 +105,13 @@ public class Game {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Game)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return getGame_id() == game.getGame_id() && Float.compare(game.getDecimal(), getDecimal()) == 0 && getQuantity() == game.getQuantity() && getTitle().equals(game.getTitle()) && getEsrb_rating().equals(game.getEsrb_rating()) && getDescription().equals(game.getDescription()) && getStudio().equals(game.getStudio());
+        return getGameId() == game.getGameId() && getQuantity() == game.getQuantity() && Objects.equals(getTitle(), game.getTitle()) && Objects.equals(getEsrbRating(), game.getEsrbRating()) && Objects.equals(getPrice(), game.getPrice()) && Objects.equals(getDescription(), game.getDescription()) && Objects.equals(getDecimal(), game.getDecimal()) && Objects.equals(getStudio(), game.getStudio());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getGame_id(), getTitle(), getEsrb_rating(), getDescription(), getDecimal(), getStudio(), getQuantity());
+        return Objects.hash(getGameId(), getTitle(), getEsrbRating(), getPrice(), getDescription(), getDecimal(), getStudio(), getQuantity());
     }
 }

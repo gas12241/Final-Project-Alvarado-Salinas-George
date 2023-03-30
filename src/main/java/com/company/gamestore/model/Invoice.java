@@ -5,16 +5,18 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="invoice")
-public class Invoice {
+public class Invoice implements Serializable {
     @Id
     @Column(name = "invoice_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
     private int invoiceId;
 
     @NotNull
@@ -42,7 +44,7 @@ public class Invoice {
     private String itemType;
 
     @NotNull
-    private String itemId;
+    private int itemId;
 
     @NotNull
     private BigDecimal unitPrice;
@@ -120,11 +122,11 @@ public class Invoice {
         this.itemType = itemType;
     }
 
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 
