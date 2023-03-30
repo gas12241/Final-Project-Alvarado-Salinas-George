@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Repository;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,7 @@ public class TshirtRepositoryTest {
         Tshirt tshirt = new Tshirt();
         tshirt.setColor("green");
         tshirt.setDescription("nike t-shirt for children");
-        tshirt.setPrice(12);
+        tshirt.setPrice(BigDecimal.valueOf(12));
         tshirt.setSize("large");
         tshirt.setQuantity(100);
         tshirt = tshirtRepository.save(tshirt);
@@ -62,7 +63,7 @@ public class TshirtRepositoryTest {
         Tshirt tshirt1 = new Tshirt();
         tshirt1.setColor("green");
         tshirt1.setDescription("nike t-shirt for children");
-        tshirt1.setPrice(12);
+        tshirt1.setPrice(BigDecimal.valueOf(12));
         tshirt1.setSize("large");
         tshirt1.setQuantity(100);
         tshirt1 = tshirtRepository.save(tshirt1);
@@ -70,7 +71,7 @@ public class TshirtRepositoryTest {
         Tshirt tshirt2 = new Tshirt();
         tshirt2.setColor("yellow");
         tshirt2.setDescription("adidas t-shirt for adults");
-        tshirt2.setPrice(20);
+        tshirt2.setPrice(BigDecimal.valueOf(20));
         tshirt2.setSize("medium");
         tshirt2.setQuantity(50);
         tshirt2 = tshirtRepository.save(tshirt2);
@@ -83,7 +84,7 @@ public class TshirtRepositoryTest {
         Tshirt tshirt = new Tshirt();
         tshirt.setColor("green");
         tshirt.setDescription("nike t-shirt for children");
-        tshirt.setPrice(12);
+        tshirt.setPrice(BigDecimal.valueOf(12));
         tshirt.setSize("large");
         tshirt.setQuantity(100);
         tshirt = tshirtRepository.save(tshirt);
@@ -97,7 +98,7 @@ public class TshirtRepositoryTest {
         Tshirt tshirt = new Tshirt();
         tshirt.setColor("green");
         tshirt.setDescription("nike t-shirt for children");
-        tshirt.setPrice(12);
+        tshirt.setPrice(BigDecimal.valueOf(12));
         tshirt.setSize("large");
         tshirt.setQuantity(100);
         tshirt = tshirtRepository.save(tshirt);
@@ -114,7 +115,7 @@ public class TshirtRepositoryTest {
         Tshirt tshirt = new Tshirt();
         tshirt.setColor("green");
         tshirt.setDescription("nike t-shirt for children");
-        tshirt.setPrice(12);
+        tshirt.setPrice(BigDecimal.valueOf(12));
         tshirt.setSize("large");
         tshirt.setQuantity(100);
         tshirt = tshirtRepository.save(tshirt);
