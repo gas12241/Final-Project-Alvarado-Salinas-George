@@ -42,7 +42,7 @@ public class ServiceLayer {
         int itemId = invoice.getItemId();
         String itemType = invoice.getItemType();
         Boolean isPresent = false;
-        BigDecimal productPrice;
+        BigDecimal productPrice = new BigDecimal(0);
 
         String consoleKey = "console";
         String gameKey = "game";
@@ -73,7 +73,7 @@ public class ServiceLayer {
         } else if (itemType.equals(tshirtKey)) {
             Optional<Tshirt> res = tshirtRepository.findById(itemId);
             isPresent = res.isPresent();
-//            if (isPresent) productPrice = res.get().getPrice();
+            if (isPresent) productPrice = res.get().getPrice();
         }
 
         if (!isPresent) return null;
@@ -87,7 +87,12 @@ public class ServiceLayer {
         invoice.setItemId(itemId);
 
         // Calculate subtotal
-//        BigDecimal subtotal = invoice.
+        BigDecimal subtotal = productPrice.multiply(new BigDecimal(invoice.getQuantity()));
+        invoice.setSubtotal(subtotal);
+
+        // Calculate total
+        BigDecimal total = subtotal.subtract(invoice.getProcessingFee()).subtract(invoice.getTax());
+        invoice.setTotal(total);
 
         // save invoice and return
         invoiceRepository.save(invoice);
