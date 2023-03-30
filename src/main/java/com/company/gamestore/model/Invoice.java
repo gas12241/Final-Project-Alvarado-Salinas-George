@@ -45,12 +45,11 @@ public class Invoice implements Serializable {
 
     @NotNull
     private int itemId;
+    @NotNull
+    private int quantity;
 
     @NotNull
     private BigDecimal unitPrice;
-
-    @NotNull
-    private int quantity;
 
     @NotNull
     private BigDecimal subtotal;

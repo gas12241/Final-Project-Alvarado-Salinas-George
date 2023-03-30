@@ -2,11 +2,14 @@ package com.company.gamestore.service;
 
 import com.company.gamestore.model.*;
 import com.company.gamestore.repository.*;
+import com.company.gamestore.viewmodel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -21,14 +24,12 @@ public class ServiceLayer {
 
 
     @Autowired
-    public ServiceLayer(
-            ConsoleRepository consoleRepository,
-            FeeRepository feeRepository,
-            GameRepository gameRepository,
-            TaxRepository taxRepository,
-            TshirtRepository tshirtRepository,
-            InvoiceRepository invoiceRepository
-    ) {
+    public ServiceLayer(ConsoleRepository consoleRepository,
+                        FeeRepository feeRepository,
+                        GameRepository gameRepository,
+                        TaxRepository taxRepository,
+                        TshirtRepository tshirtRepository,
+                        InvoiceRepository invoiceRepository) {
         this.consoleRepository = consoleRepository;
         this.feeRepository = feeRepository;
         this.gameRepository = gameRepository;
@@ -87,11 +88,56 @@ public class ServiceLayer {
         invoice.setItemId(itemId);
 
         // Calculate subtotal
-//        BigDecimal subtotal = invoice.
+        // igDecimal subtotal = invoice.
 
         // save invoice and return
         invoiceRepository.save(invoice);
 
         return invoice;
+    }
+
+    public List<Invoice> findInvoiceByCustomerName(String name) {
+        return invoiceRepository.findInvoiceByName(name);
+    }
+
+
+    public Invoice createInvoice(InvoiceViewModel invoiceViewModel) throws Exception {
+        Invoice invoice = new Invoice();
+        invoice.setName(invoiceViewModel.getName());
+        invoice.setStreet(invoiceViewModel.getStreet());
+        invoice.setState(invoiceViewModel.getState());
+        invoice.setCity(invoiceViewModel.getCity());
+        invoice.setZipcode(invoiceViewModel.getZipcode());
+        invoice.setItemType(invoiceViewModel.getItemType());
+        invoice.setItemId(invoiceViewModel.getItemId());
+        invoice.setQuantity(invoiceViewModel.getQuantity());
+
+        // Set invoice tax
+        Optional<Tax> resStateTax = taxRepository.findById(invoice.getState());
+        if (!resStateTax.isPresent()) {
+            throw new Exception("Invalid State");
+        }
+        invoice.setTax(resStateTax.get().getRate());
+
+        // Set processing fee
+        Optional<Fee> resFee = feeRepository.findById(invoice.getItemType());
+        if (!resFee.isPresent()) {
+            throw new Exception("Invalid ItemType");
+        }
+        invoice.setProcessingFee(resFee.get().getFee());
+
+
+        // Calculate subtotal
+
+
+        // save invoice and return
+        invoice = invoiceRepository.save(invoice);
+        return invoice;
+
+    }
+
+    private BigDecimal calculateSubtotal() {
+        // TODO
+        return BigDecimal.valueOf(1);
     }
 }

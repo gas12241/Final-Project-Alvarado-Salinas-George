@@ -2,19 +2,21 @@ package com.company.gamestore.controller;
 
 import com.company.gamestore.model.Invoice;
 import com.company.gamestore.repository.InvoiceRepository;
+import com.company.gamestore.service.ServiceLayer;
+import com.company.gamestore.viewmodel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController("/invoices")
 public class InvoiceController {
     @Autowired
     InvoiceRepository invoiceRepository;
-
+    @Autowired
+    ServiceLayer serviceLayer;
 
     @GetMapping(path = "")
     @ResponseStatus(value = HttpStatus.OK)
@@ -23,8 +25,17 @@ public class InvoiceController {
     }
 
     @GetMapping(path = "")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public List<Invoice> createInvoice() {
-        return invoiceRepository.findAll();
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<Invoice> getInvoiceByName(@PathVariable String name) {
+        return invoiceRepository.findInvoiceByName(name);
     }
+
+    @PostMapping(path = "")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void createInvoice(@RequestBody InvoiceViewModel invoiceViewModel) throws Exception {
+        serviceLayer.createInvoice(invoiceViewModel);
+    }
+
+
+
 }
