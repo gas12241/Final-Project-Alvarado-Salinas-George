@@ -24,7 +24,7 @@ public class InvoiceController {
         return invoiceRepository.findAll();
     }
 
-    @GetMapping
+    @GetMapping(path="/{name}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<Invoice> getInvoiceByName(@PathVariable String name) {
         return invoiceRepository.findInvoiceByName(name);

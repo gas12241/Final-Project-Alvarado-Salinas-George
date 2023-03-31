@@ -31,9 +31,6 @@ public class Game implements  Serializable {
     private String description;
 
     @NotNull
-    private BigDecimal decimal;
-
-    @NotNull
     private String studio;
 
     private int quantity;
@@ -78,14 +75,6 @@ public class Game implements  Serializable {
         this.description = description;
     }
 
-    public BigDecimal getDecimal() {
-        return decimal;
-    }
-
-    public void setDecimal(BigDecimal decimal) {
-        this.decimal = decimal;
-    }
-
     public String getStudio() {
         return studio;
     }
@@ -107,11 +96,24 @@ public class Game implements  Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return getGameId() == game.getGameId() && getQuantity() == game.getQuantity() && Objects.equals(getTitle(), game.getTitle()) && Objects.equals(getEsrbRating(), game.getEsrbRating()) && Objects.equals(getPrice(), game.getPrice()) && Objects.equals(getDescription(), game.getDescription()) && Objects.equals(getDecimal(), game.getDecimal()) && Objects.equals(getStudio(), game.getStudio());
+        return gameId == game.gameId && quantity == game.quantity && Objects.equals(title, game.title) && Objects.equals(esrbRating, game.esrbRating) && Objects.equals(price, game.price) && Objects.equals(description, game.description) && Objects.equals(studio, game.studio);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getGameId(), getTitle(), getEsrbRating(), getPrice(), getDescription(), getDecimal(), getStudio(), getQuantity());
+        return Objects.hash(gameId, title, esrbRating, price, description, studio, quantity);
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "gameId=" + gameId +
+                ", title='" + title + '\'' +
+                ", esrbRating='" + esrbRating + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", studio='" + studio + '\'' +
+                ", quantity=" + quantity +
+                '}';
     }
 }
