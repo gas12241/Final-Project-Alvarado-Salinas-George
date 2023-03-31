@@ -22,7 +22,7 @@ public class ServiceLayer {
     private TshirtRepository tshirtRepository;
     private InvoiceRepository invoiceRepository;
 
-    enum ItemType {console, tshirt, game};
+    enum ItemType {Console, Tshirt, Game};
     public static final BigDecimal additionalProcessingFee = BigDecimal.valueOf(15.49);
     public static final int QUANTITY = 10;
 
@@ -70,21 +70,21 @@ public class ServiceLayer {
         // check if quantity is available
         int quantity = 0;
         switch (ItemType.valueOf(invoice.getItemType())) {
-            case console:
+            case Console:
                 Optional<Console> console = consoleRepository.findById(invoiceViewModel.getItemId());
                 if (console.isPresent()) {
                     quantity = console.get().getQuantity();
                     invoice.setUnitPrice(console.get().getPrice());
                 }
                 break;
-            case tshirt:
+            case Tshirt:
                 Optional<Tshirt> tshirt = tshirtRepository.findById(invoiceViewModel.getItemId());
                 if (tshirt.isPresent()) {
                     quantity = tshirt.get().getQuantity();
                     invoice.setUnitPrice(tshirt.get().getPrice());
                 }
                 break;
-            case game:
+            case Game:
                 Optional<Game> game = gameRepository.findById(invoiceViewModel.getItemId());
                 if (game.isPresent()) {
                     quantity = game.get().getQuantity();

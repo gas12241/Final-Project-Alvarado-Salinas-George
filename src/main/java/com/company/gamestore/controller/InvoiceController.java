@@ -11,26 +11,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController("/invoices")
+@RestController
 public class InvoiceController {
     @Autowired
     InvoiceRepository invoiceRepository;
     @Autowired
     ServiceLayer serviceLayer;
 
-    @GetMapping
+    @GetMapping(path="/invoices")
     @ResponseStatus(value = HttpStatus.OK)
     public List<Invoice> getAllInvoices() {
         return invoiceRepository.findAll();
     }
 
-    @GetMapping(path="/{name}")
+    @GetMapping(path="/invoices/{name}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<Invoice> getInvoiceByName(@PathVariable String name) {
         return invoiceRepository.findInvoiceByName(name);
     }
 
-    @PostMapping
+    @PostMapping(path=("/invoices"))
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createInvoice(@RequestBody InvoiceViewModel invoiceViewModel) throws Exception {
         serviceLayer.createInvoice(invoiceViewModel);
