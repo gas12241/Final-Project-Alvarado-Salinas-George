@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -70,7 +71,7 @@ public class TshirtControllerTest {
         Tshirt tshirt = new Tshirt();
         tshirt.setColor("green");
         tshirt.setDescription("nike t-shirt for children");
-        tshirt.setPrice(12);
+        tshirt.setPrice(BigDecimal.valueOf(12));
         tshirt.setSize("large");
         tshirt.setQuantity(100);
         tshirt.setTshirtId(1);
@@ -93,7 +94,7 @@ public class TshirtControllerTest {
         Tshirt tshirt = new Tshirt();
         tshirt.setColor("green");
         tshirt.setDescription("nike t-shirt for children");
-        tshirt.setPrice(12);
+        tshirt.setPrice(BigDecimal.valueOf(12));
         tshirt.setSize("large");
         tshirt.setQuantity(100);
         tshirt.setTshirtId(1);
