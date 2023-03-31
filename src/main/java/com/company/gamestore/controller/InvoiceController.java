@@ -15,23 +15,22 @@ public class InvoiceController {
     ServiceLayer serviceLayer;
 
 
-
     @PostMapping(path = "/invoices")
     @ResponseStatus(value = HttpStatus.CREATED)
     public Invoice createInvoice(@RequestAttribute InvoiceViewModel invoiceViewModel) {
         Invoice invoice = new Invoice();
-        invoice.setName(invoice.getName());
+        invoice.setName(invoiceViewModel.getName());
         invoice.setStreet(invoiceViewModel.getStreet());
-        invoice.setCity(invoice.getCity());
+        invoice.setCity(invoiceViewModel.getCity());
         invoice.setState(invoiceViewModel.getState());
-        invoice.setZipcode(invoice.getZipcode());
+        invoice.setZipcode(invoiceViewModel.getZipcode());
         invoice.setItemType(invoiceViewModel.getItemType());
-        invoice.setItemId(invoice.getItemId());
+        invoice.setItemId(invoiceViewModel.getItemId());
         invoice.setQuantity(invoiceViewModel.getQuantity());
 
         Invoice saveInvoice = serviceLayer.saveInvoice(invoice);
 
-        if(saveInvoice == null){
+        if (saveInvoice == null) {
             throw new IllegalArgumentException("Invalid input Provided");
         }
 
