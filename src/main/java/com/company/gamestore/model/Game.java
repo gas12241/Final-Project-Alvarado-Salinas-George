@@ -30,8 +30,6 @@ public class Game implements  Serializable {
     @NotNull
     private String description;
 
-    @NotNull
-    private BigDecimal decimal;
 
     @NotNull
     private String studio;
@@ -78,13 +76,6 @@ public class Game implements  Serializable {
         this.description = description;
     }
 
-    public BigDecimal getDecimal() {
-        return decimal;
-    }
-
-    public void setDecimal(BigDecimal decimal) {
-        this.decimal = decimal;
-    }
 
     public String getStudio() {
         return studio;
@@ -107,11 +98,11 @@ public class Game implements  Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return getGameId() == game.getGameId() && getQuantity() == game.getQuantity() && Objects.equals(getTitle(), game.getTitle()) && Objects.equals(getEsrbRating(), game.getEsrbRating()) && Objects.equals(getPrice(), game.getPrice()) && Objects.equals(getDescription(), game.getDescription()) && Objects.equals(getDecimal(), game.getDecimal()) && Objects.equals(getStudio(), game.getStudio());
+        return getGameId() == game.getGameId() && getQuantity() == game.getQuantity() && Objects.equals(getTitle(), game.getTitle()) && Objects.equals(getEsrbRating(), game.getEsrbRating()) && Objects.equals(getPrice(), game.getPrice()) && Objects.equals(getDescription(), game.getDescription())  && Objects.equals(getStudio(), game.getStudio());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getGameId(), getTitle(), getEsrbRating(), getPrice(), getDescription(), getDecimal(), getStudio(), getQuantity());
+        return Objects.hash(getGameId(), getTitle(), getEsrbRating(), getPrice(), getDescription(), getStudio(), getQuantity());
     }
 }
