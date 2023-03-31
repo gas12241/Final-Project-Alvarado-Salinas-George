@@ -50,7 +50,7 @@ public class ConsoleController {
     }
 
     //READ - Get consoles by Manufacturer
-    @PutMapping("/console/manufacturer/{manufacturer}")
+    @GetMapping("/console/manufacturer/{manufacturer}")
     @ResponseStatus(HttpStatus.OK)
     public List<Console> findConsolesByManufacturer(@PathVariable String manufacturer) {
         return consoleRepo.findByManufacturer(manufacturer);
