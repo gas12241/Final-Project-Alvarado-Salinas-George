@@ -14,11 +14,13 @@ import java.util.Optional;
 public class TshirtController {
     @Autowired
     TshirtRepository tshirtRepository;
+
     @GetMapping(path = "/tshirt/color/{color}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<Tshirt> getTshirtByColor(@PathVariable String color) {
         return tshirtRepository.findByColor(color);
     }
+
     @GetMapping(path = "/tshirt/size/{size}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<Tshirt> getTshirtBySize(@PathVariable String size) {
@@ -49,6 +51,7 @@ public class TshirtController {
     public void deleteTshirt(@PathVariable Integer id) {
         tshirtRepository.deleteById(id);
     }
+    
     @PutMapping(path = "/tshirt")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateTshirt(@RequestBody @Valid Tshirt tshirt) {

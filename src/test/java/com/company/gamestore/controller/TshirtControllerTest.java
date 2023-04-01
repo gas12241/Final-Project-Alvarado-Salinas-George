@@ -40,14 +40,18 @@ public class TshirtControllerTest {
     @Test
     public void getTshirtByColor() throws Exception {
 
+
         mockMvc.perform(get("/tshirt/color/green"))
+
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
     public void getTshirtBySize() throws Exception {
+
         mockMvc.perform(get("/tshirt/size/large"))
+
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -97,6 +101,7 @@ public class TshirtControllerTest {
         tshirt.setPrice(BigDecimal.valueOf(12.00));
         tshirt.setSize("large");
         tshirt.setQuantity(100);
+
         tshirt.setTshirtId(2);
         String inputJson = mapper.writeValueAsString(tshirt);
 
