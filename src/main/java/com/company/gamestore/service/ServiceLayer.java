@@ -5,6 +5,7 @@ import com.company.gamestore.repository.*;
 import com.company.gamestore.viewmodel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
@@ -74,7 +75,10 @@ public class ServiceLayer {
                 Optional<Console> console = consoleRepository.findById(invoiceViewModel.getItemId());
                 if (console.isPresent()) {
                     quantity = console.get().getQuantity();
+                    invoice.setItemId(console.get().getConsole_id());
                     invoice.setUnitPrice(console.get().getPrice());
+                } else {
+                    //throw new MethodArgumentNotValidException("no such");
                 }
                 break;
             case Tshirt:
@@ -82,6 +86,8 @@ public class ServiceLayer {
                 if (tshirt.isPresent()) {
                     quantity = tshirt.get().getQuantity();
                     invoice.setUnitPrice(tshirt.get().getPrice());
+                } else {
+                    //throw new Exception("no such item");
                 }
                 break;
             case Game:
@@ -89,6 +95,8 @@ public class ServiceLayer {
                 if (game.isPresent()) {
                     quantity = game.get().getQuantity();
                     invoice.setUnitPrice(invoice.getUnitPrice());
+                } else {
+                    throw new Exception("no such item");
                 }
                 break;
             default:
