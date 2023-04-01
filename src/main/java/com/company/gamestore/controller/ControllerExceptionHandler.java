@@ -25,8 +25,7 @@ public class ControllerExceptionHandler {
     // This status means: the request was syntactically correct, but that the service can't process it because it doesn't meet some business rule.
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-
-    public ResponseEntity<List<CustomErrorResponse>> recordValidationError(MethodArgumentNotValidException e) {
+    public ResponseEntity<List<CustomErrorResponse>> controllerValidationError(MethodArgumentNotValidException e) {
         // BindingResult holds the validation errors
         BindingResult result = e.getBindingResult();
         // Validation errors are stored in FieldError objects
@@ -43,7 +42,17 @@ public class ControllerExceptionHandler {
         }
 
         // Create and return the ResponseEntity
-        ResponseEntity<List<CustomErrorResponse>> responseEntity = new ResponseEntity<>(errorResponseList, HttpStatus.UNPROCESSABLE_ENTITY);
-        return responseEntity;
+        return new ResponseEntity<>(errorResponseList, HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<CustomErrorResponse> serviceLayerValidationError(IllegalArgumentException e) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.toString(), e.getMessage());
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+
 }
