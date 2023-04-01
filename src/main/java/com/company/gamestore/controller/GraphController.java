@@ -34,7 +34,7 @@ public class GraphController {
 
     @QueryMapping
     public List<Game> findGamesByTitle(@Argument String title) {
-        return gameRepo.findByTitle(title);
+        return gameRepo.findByTitleContaining(title);
     }
 
     @QueryMapping

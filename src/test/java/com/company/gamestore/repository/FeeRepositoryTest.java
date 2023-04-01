@@ -33,8 +33,8 @@ public class FeeRepositoryTest {
         feeRepo.save(fee1);
 
         fee2 = new Fee();
-        fee1.setProductType("Laptop");
-        fee1.setFee(BigDecimal.valueOf(5.00));
+        fee2.setProductType("Laptop");
+        fee2.setFee(BigDecimal.valueOf(5.00));
         feeRepo.save(fee2);
     }
 
@@ -52,7 +52,7 @@ public class FeeRepositoryTest {
     // Test Update
     @Test
     public void testUpdateFee() {
-        fee1.setFee(BigDecimal.valueOf(2500));
+        fee1.setFee(BigDecimal.valueOf(2500.62));
         feeRepo.save(fee1);
 
         Optional<Fee> feeFromRepo = feeRepo.findById(fee1.getProductType());

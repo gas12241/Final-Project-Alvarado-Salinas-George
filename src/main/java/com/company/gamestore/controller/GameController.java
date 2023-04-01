@@ -70,6 +70,8 @@ public class GameController {
     @GetMapping("/game/title/{title}")
     @ResponseStatus(HttpStatus.OK)
     public List<Game> findGamesByTitle(@PathVariable String title) {
-        return gameRepo.findByTitle(title);
+
+
+        return gameRepo.findByTitleContaining(title);
     }
 }
