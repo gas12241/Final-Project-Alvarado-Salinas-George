@@ -19,7 +19,7 @@ import java.util.List;
 public class ControllerExceptionHandler {
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ResponseEntity<List<CustomErrorResponse>> invoiceValidationError(MethodArgumentNotValidException e) {
+    public ResponseEntity<List<CustomErrorResponse>> gameStoreValidationError(MethodArgumentNotValidException e) {
         // BindingResult holds the validation errors
         BindingResult result = e.getBindingResult();
         // Validation errors are stored in FieldError objects
@@ -35,8 +35,16 @@ public class ControllerExceptionHandler {
             errorResponseList.add(errorResponse);
         }
         // Create and return the ResponseEntity
-        ResponseEntity<List<CustomErrorResponse>> responseEntity = new ResponseEntity<>(errorResponseList, HttpStatus.UNPROCESSABLE_ENTITY);
-        return responseEntity;
+        return new ResponseEntity<>(errorResponseList, HttpStatus.UNPROCESSABLE_ENTITY);
     }
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<CustomErrorResponse> serviceLayerError(IllegalArgumentException e) {
 
+        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.toString(), e.getMessage());
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 }

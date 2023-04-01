@@ -1,15 +1,32 @@
 package com.company.gamestore.viewmodel;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class InvoiceViewModel {
+    @NotNull
+    @Size(max = 50)
     private String name;
+    @NotEmpty
+    @Size(max = 100)
     private String street;
+    @NotEmpty
+    @Size(max = 50)
     private String city;
+    @NotEmpty
+    @Size(max = 20)
     private  String state;
+    @NotEmpty
+    @Size(max = 10)
     private String zipcode;
+    @NotEmpty
+    @Size(max = 50)
     private String itemType;
+    @NotNull
     private int itemId;
+    @NotNull
     private int quantity;
 
     public String getName() {

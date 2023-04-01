@@ -23,10 +23,11 @@ public class ServiceLayer {
     private TshirtRepository tshirtRepository;
     private InvoiceRepository invoiceRepository;
 
-    enum ItemType {Console, Tshirt, Game};
+    enum ItemType {Console, Tshirt, Game}
+
+    ;
     public static final BigDecimal additionalProcessingFee = BigDecimal.valueOf(15.49);
     public static final int QUANTITY = 10;
-
 
     @Autowired
     public ServiceLayer(ConsoleRepository consoleRepository,
@@ -42,33 +43,26 @@ public class ServiceLayer {
         this.tshirtRepository = tshirtRepository;
         this.invoiceRepository = invoiceRepository;
     }
+
     @Transactional
-    public Invoice createInvoice(InvoiceViewModel invoiceViewModel) throws Exception {
-        Invoice invoice = new Invoice();
-        invoice.setName(invoiceViewModel.getName());
-        invoice.setStreet(invoiceViewModel.getStreet());
-        invoice.setState(invoiceViewModel.getState());
-        invoice.setCity(invoiceViewModel.getCity());
-        invoice.setZipcode(invoiceViewModel.getZipcode());
-        invoice.setItemType(invoiceViewModel.getItemType());
-        invoice.setItemId(invoiceViewModel.getItemId());
-        invoice.setQuantity(invoiceViewModel.getQuantity());
+    public void createInvoice(InvoiceViewModel invoiceViewModel) throws Exception {
+        Invoice invoice = setInvoiceByInvoiceViewModel(invoiceViewModel);
 
         // Set invoice tax
         Optional<Tax> resStateTax = taxRepository.findById(invoice.getState());
         if (!resStateTax.isPresent()) {
-            throw new Exception("Invalid State");
+            throw new IllegalArgumentException("Invalid State");
         }
         invoice.setTax(resStateTax.get().getRate());
 
         // Set processing fee
         Optional<Fee> resFee = feeRepository.findById(invoice.getItemType());
         if (!resFee.isPresent()) {
-            throw new Exception("Invalid ItemType");
+            throw new IllegalArgumentException("Invalid ItemType");
         }
         invoice.setProcessingFee(resFee.get().getFee());
 
-        // check if quantity is available
+        // check if itemID exists
         int quantity = 0;
         switch (ItemType.valueOf(invoice.getItemType())) {
             case Console:
@@ -78,58 +72,74 @@ public class ServiceLayer {
                     invoice.setItemId(console.get().getConsole_id());
                     invoice.setUnitPrice(console.get().getPrice());
                 } else {
-                    //throw new MethodArgumentNotValidException("no such");
+                    throw new IllegalArgumentException("Invalid ItemId");
                 }
                 break;
             case Tshirt:
                 Optional<Tshirt> tshirt = tshirtRepository.findById(invoiceViewModel.getItemId());
                 if (tshirt.isPresent()) {
                     quantity = tshirt.get().getQuantity();
+                    invoice.setItemId(tshirt.get().getTshirtId());
                     invoice.setUnitPrice(tshirt.get().getPrice());
                 } else {
-                    //throw new Exception("no such item");
+                    throw new IllegalArgumentException("Invalid ItemId");
                 }
                 break;
             case Game:
                 Optional<Game> game = gameRepository.findById(invoiceViewModel.getItemId());
                 if (game.isPresent()) {
                     quantity = game.get().getQuantity();
+                    invoice.setItemId(game.get().getGameId());
                     invoice.setUnitPrice(invoice.getUnitPrice());
                 } else {
-                    throw new Exception("no such item");
+                    throw new IllegalArgumentException("Invalid ItemId");
                 }
                 break;
             default:
-                throw new Exception("Invalid ItemType");
+                throw new IllegalArgumentException("Invalid ItemType");
         }
 
-        // Calculate subtotal and total
+        // check if purchase quantity is valid
         if (quantity < invoiceViewModel.getQuantity()) {
-            throw new Exception("We don't have so many items!");
-        } else {
-            BigDecimal subtotal = invoice.getUnitPrice().multiply(BigDecimal.valueOf(invoiceViewModel.getQuantity()));
-            BigDecimal taxRate = taxRepository.findTaxByState(invoice.getState()).get().getRate();
-            BigDecimal processingPrice = feeRepository.findFeeByProductType(invoice.getItemType()).get().getFee();
-            BigDecimal total = calculateTotal(subtotal, taxRate,invoice.getQuantity(), processingPrice);
-
-            BigDecimal tax = subtotal.multiply(BigDecimal.valueOf(1).add(taxRate));
-            invoice.setProcessingFee(processingPrice);
-
-            invoice.setTax(tax);
-            invoice.setTotal(total);
-            invoice.setSubtotal(subtotal);
+            throw new IllegalArgumentException("We don't have so many items!");
         }
+
+        // set subtotal
+        BigDecimal subtotal = invoice.getUnitPrice().multiply(BigDecimal.valueOf(invoiceViewModel.getQuantity()));
+        invoice.setSubtotal(subtotal);
+
+        // set processingPrice
+        BigDecimal processingPrice = feeRepository.findFeeByProductType(invoice.getItemType()).get().getFee();
+        if (invoice.getQuantity() > QUANTITY) {
+            processingPrice = processingPrice.add(additionalProcessingFee);
+        }
+        invoice.setProcessingFee(processingPrice);
+
+        // set tax
+        BigDecimal taxRate = taxRepository.findTaxByState(invoice.getState()).get().getRate();
+        BigDecimal tax = subtotal.multiply(taxRate);
+        invoice.setTax(tax);
+
+        // set total
+        BigDecimal total = subtotal.add(tax).add(processingPrice);
+        invoice.setTotal(total);
 
         // save invoice and return
-        invoice = invoiceRepository.save(invoice);
+        invoiceRepository.save(invoice);
+    }
+
+    private Invoice setInvoiceByInvoiceViewModel(InvoiceViewModel invoiceViewModel) {
+        Invoice invoice = new Invoice();
+        invoice.setName(invoiceViewModel.getName());
+        invoice.setStreet(invoiceViewModel.getStreet());
+        invoice.setState(invoiceViewModel.getState());
+        invoice.setCity(invoiceViewModel.getCity());
+        invoice.setZipcode(invoiceViewModel.getZipcode());
+        invoice.setItemType(invoiceViewModel.getItemType());
+        invoice.setItemId(invoiceViewModel.getItemId());
+        invoice.setQuantity(invoiceViewModel.getQuantity());
         return invoice;
     }
 
-    private BigDecimal calculateTotal(BigDecimal subtotal, BigDecimal tax, int quantity, BigDecimal processingPrice) {
-        BigDecimal total = subtotal.add(tax);
-        total.add(processingPrice);
-        if (quantity > QUANTITY) total.add(additionalProcessingFee);
-        return total;
-    }
 
 }
