@@ -23,7 +23,7 @@ public class ConsoleController {
 
     //UPDATE - Put a console in DB
     @PutMapping("/console")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public Console updateConsole(@RequestBody Console console) {
         return consoleRepo.save(console);
     }
