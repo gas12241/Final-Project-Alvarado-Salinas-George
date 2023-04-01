@@ -51,7 +51,7 @@ public class TshirtController {
     }
     @PutMapping(path = "/tshirt")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateTshirt(@RequestBody Tshirt tshirt) {
+    public void updateTshirt(@RequestBody @Valid Tshirt tshirt) {
         tshirtRepository.save(tshirt);
     }
 }
