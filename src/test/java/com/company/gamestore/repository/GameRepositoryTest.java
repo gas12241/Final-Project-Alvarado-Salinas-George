@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -40,7 +41,6 @@ public class GameRepositoryTest {
         game1.setStudio("Raven Software");
         game1.setQuantity(1000);
 
-        gameRepo.save(game1);
 
         game2 = new Game();
         //game2.setGameId();
@@ -52,10 +52,9 @@ public class GameRepositoryTest {
         game2.setStudio("Riot Games");
         game2.setQuantity(1000);
 
-        gameRepo.save(game2);
 
         game3 = new Game();
-        game3.setGameId(2);
+        // game3.setGameId(2);
         game3.setTitle("Call of Duty: Modern Warfare 2");
         game3.setEsrbRating("M");
         game3.setPrice(BigDecimal.valueOf(69.99));
@@ -64,10 +63,9 @@ public class GameRepositoryTest {
         game3.setStudio("Infinity Ward");
         game3.setQuantity(500);
 
-        gameRepo.save(game3);
 
         game4 = new Game();
-        game4.setGameId(25);
+        // game4.setGameId(25);
         game4.setTitle("Valorant");
         game4.setEsrbRating("T");
         game4.setPrice(BigDecimal.valueOf(0.00));
@@ -77,7 +75,10 @@ public class GameRepositoryTest {
         game4.setStudio("Riot Games");
         game4.setQuantity(1000);
 
-        gameRepo.save(game4);
+        game1 = gameRepo.save(game1);
+        game2 = gameRepo.save(game2);
+        game3 = gameRepo.save(game3);
+        game4 = gameRepo.save(game4);
     }
 
     // Test Post
@@ -95,15 +96,16 @@ public class GameRepositoryTest {
         newGame = gameRepo.save(newGame);
         Optional<Game> game1 = gameRepo.findById(newGame.getGameId());
         assertEquals(game1.get(), newGame);
+        assertEquals(5, gameRepo.findAll().size());
     }
 
     // Test Put
     @Test
     public void testUpdateGame() {
-        assertEquals(gameRepo.findById(25).get().getTitle(), "Valorant");
+        assertEquals(gameRepo.findById(game4.getGameId()).get().getTitle(), "Valorant");
         game4.setTitle("Updated Title");
         gameRepo.save(game4);
-        assertEquals(gameRepo.findById(25).get().getTitle(), "Updated Title");
+        assertEquals(gameRepo.findById(game4.getGameId()).get().getTitle(), "Updated Title");
     }
 
     //Test Get All Games
@@ -115,18 +117,19 @@ public class GameRepositoryTest {
     // Test Get Game by Id
     @Test
     public void testFindGameById() {
-        Optional<Game> gameFromRepo = gameRepo.findById(2);
-        assertEquals(gameFromRepo, game3);
+        Optional<Game> gameFromRepo = gameRepo.findById(game3.getGameId());
+        assertEquals(gameFromRepo.get(), game3);
     }
 
     // Test Delete Game
     @Test
     public void deleteGame() {
-        Optional<Game> gameFromRepo = gameRepo.findById(25);
+        Optional<Game> gameFromRepo = gameRepo.findById(game1.getGameId());
+        System.out.println(gameFromRepo);
         assertTrue(gameFromRepo.isPresent());
 
-        gameRepo.deleteById(25);
-        Optional<Game> secondGameFromRepo = gameRepo.findById(25);
+        gameRepo.deleteById(game1.getGameId());
+        Optional<Game> secondGameFromRepo = gameRepo.findById(game1.getGameId());
         assertFalse(secondGameFromRepo.isPresent());
     }
 
@@ -141,7 +144,6 @@ public class GameRepositoryTest {
     public void testGetAllGamesByRating() {
         // I made games Apex Legends, League of Legends and Valorant above,
         // they all have rating "T" so this should be 3
-        //
         assertEquals(gameRepo.findByEsrbRating("T").size(), 3);
     }
 
@@ -149,6 +151,6 @@ public class GameRepositoryTest {
     public void testGetAllGamesByTitle() {
         // I made games Apex Legends and League of Legends above,
         // so this should be 2
-        assertEquals(gameRepo.findByTitle("Legends").size(), 2);
+        assertEquals(gameRepo.findByTitleContaining("legends").size(), 2);
     }
 }

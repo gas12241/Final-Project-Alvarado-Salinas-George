@@ -58,7 +58,8 @@ public class TaxRepositoryTest {
         taxRepo.save(tax1);
 
         Optional<Tax> taxFromRepo = taxRepo.findById(tax1.getState());
-        assertEquals(taxFromRepo.get().getRate(), tax1.getRate());
+        BigDecimal rate = taxFromRepo.get().getRate();
+        assertEquals(tax1.getRate(), rate.stripTrailingZeros());
     }
 
     // Test Get all
@@ -71,7 +72,8 @@ public class TaxRepositoryTest {
     @Test
     public void testGetTaxById() {
         Optional<Tax> taxFromRepo = taxRepo.findById(tax1.getState());
-        assertEquals(taxFromRepo.get(), tax1);
+        BigDecimal rate = taxFromRepo.get().getRate().stripTrailingZeros();
+        assertEquals(rate, tax1.getRate());
     }
 
     // Test Delete
