@@ -4,10 +4,9 @@ package com.company.gamestore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -30,6 +29,7 @@ public class Tshirt implements Serializable {
     private String description;
     @NotNull
     @DecimalMin(value = "0.00", inclusive = true, message = "Price cannot be null and must be at least 0.00")
+    @DecimalMax(value = "999.99", inclusive = true, message = "Value must be less than {value}")
     private BigDecimal price;
     @NotNull(message = "You must supply a value for quantity.")
     private int quantity;

@@ -6,25 +6,37 @@ import com.company.gamestore.service.ServiceLayer;
 import com.company.gamestore.viewmodel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/invoices")
+@RestController
+
 public class InvoiceController {
     @Autowired
     ServiceLayer serviceLayer;
 
 
-
-    @GetMapping(path = "")
+    @PostMapping(path = "/invoices")
     @ResponseStatus(value = HttpStatus.CREATED)
     public Invoice createInvoice(@RequestAttribute InvoiceViewModel invoiceViewModel) {
         Invoice invoice = new Invoice();
-        invoice.setName(invoice.getName());
-        return serviceLayer.saveInvoice(invoice);
+        invoice.setName(invoiceViewModel.getName());
+        invoice.setStreet(invoiceViewModel.getStreet());
+        invoice.setCity(invoiceViewModel.getCity());
+        invoice.setState(invoiceViewModel.getState());
+        invoice.setZipcode(invoiceViewModel.getZipcode());
+        invoice.setItemType(invoiceViewModel.getItemType());
+        invoice.setItemId(invoiceViewModel.getItemId());
+        invoice.setQuantity(invoiceViewModel.getQuantity());
+
+        Invoice saveInvoice = serviceLayer.saveInvoice(invoice);
+
+        if (saveInvoice == null) {
+            throw new IllegalArgumentException("Invalid input Provided");
+        }
+
+        return saveInvoice;
     }
 }
