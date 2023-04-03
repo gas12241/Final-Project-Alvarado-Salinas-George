@@ -32,6 +32,19 @@ public class TshirtRepositoryTest {
         tshirtRepository.deleteAll();
     }
     @Test
+    public void testGetTshirtById() {
+        Tshirt tshirt = new Tshirt();
+        tshirt.setColor("green");
+        tshirt.setDescription("nike t-shirt for children");
+        tshirt.setPrice(BigDecimal.valueOf(12L, 2));
+        tshirt.setSize("large");
+        tshirt.setQuantity(100);
+        tshirt.setTshirtId(1);
+        tshirt = tshirtRepository.save(tshirt);
+        Optional<Tshirt> tshirt1 = tshirtRepository.findById(tshirt.getTshirtId());
+        assertTrue(tshirt1.isPresent());
+    }
+    @Test
     public void testGetTshirtByColor() {
         Tshirt tshirt = new Tshirt();
         tshirt.setColor("green");
