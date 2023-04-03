@@ -91,6 +91,8 @@ public class InvoiceServiceLayer {
 
 
 
+
+
         // Check if product there are enough product  quantity
         if(productQuantity <= 0 || productQuantity < invoice.getQuantity()) return  null;
 
