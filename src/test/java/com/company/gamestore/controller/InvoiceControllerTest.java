@@ -1,7 +1,7 @@
 package com.company.gamestore.controller;
 
 import com.company.gamestore.model.Invoice;
-import com.company.gamestore.service.ServiceLayer;
+import com.company.gamestore.service.InvoiceServiceLayer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ public class InvoiceControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ServiceLayer invoiceServiceLayer;
+    private InvoiceServiceLayer invoiceServiceLayer;
     private ObjectMapper mapper = new ObjectMapper();
 
     @Test
