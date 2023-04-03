@@ -40,7 +40,7 @@ public class InvoiceServiceLayer {
     @Transactional
     public Invoice save(Invoice invoice) {
         int itemId = invoice.getItemId();
-        String itemType = invoice.getItemType();
+        String itemType = invoice.getItemType().toLowerCase();
         int productQuantity = 0;
         Boolean isPresent = false;
         BigDecimal productPrice = new BigDecimal(0);
@@ -49,13 +49,13 @@ public class InvoiceServiceLayer {
         String gameKey = "game";
         String tshirtKey = "tshirt";
 
+        Console consoleProduct=null;
+        Game gameProduct=null;
+        Tshirt tshirtProduct=null;
 
-        String invoiceState = invoice.getState();
 
-        // Set invoice tax
-        Optional<Tax> resStateTax = taxRepository.findById(invoiceState);
-        if (!resStateTax.isPresent()) return null;
-        invoice.setTax(resStateTax.get().getRate());
+
+
 
         // Verify if valid product type is provided
         Boolean isValidItemType = itemType.equals(consoleKey) || itemType.equals(gameKey) || itemType.equals(tshirtKey);
@@ -67,29 +67,38 @@ public class InvoiceServiceLayer {
             isPresent = res.isPresent();
             productPrice = res.get().getPrice();
             productQuantity = res.get().getQuantity();
+            consoleProduct = res.get();
 
         } else if (itemType.equals(gameKey)) {
             Optional<Game> res = gameRepository.findById(itemId);
             isPresent = res.isPresent();
             productPrice = res.get().getPrice();
             productQuantity = res.get().getQuantity();
+            gameProduct = res.get();
         } else if (itemType.equals(tshirtKey)) {
             Optional<Tshirt> res = tshirtRepository.findById(itemId);
             isPresent = res.isPresent();
             productPrice = res.get().getPrice();
             productQuantity = res.get().getQuantity();
+            tshirtProduct = res.get();
         }
 
         // Return null if item does not exit
         if (!isPresent) return null;
+
+        // set unit price
+        invoice.setUnitPrice(productPrice);
+
+
 
         // Check if product there are enough product  quantity
         if(productQuantity <= 0 || productQuantity < invoice.getQuantity()) return  null;
 
         // Set processing fee
         Optional<Fee> resFee = feeRepository.findById(invoice.getItemType());
-        if (!resFee.isPresent()) return null;
-        invoice.setProcessingFee(resFee.get().getFee());
+        BigDecimal invoiceProcessingFee =  resFee.get().getFee();
+        if (invoice.getQuantity() > 10) invoice.setProcessingFee(invoiceProcessingFee.add(BigDecimal.valueOf(15.49)));
+        else invoice.setProcessingFee(invoiceProcessingFee);
 
         // Set product id
         invoice.setItemId(itemId);
@@ -98,16 +107,32 @@ public class InvoiceServiceLayer {
         BigDecimal subtotal = productPrice.multiply(new BigDecimal(invoice.getQuantity()));
         invoice.setSubtotal(subtotal);
 
+        String invoiceState = invoice.getState();
+
+        // Set invoice tax
+        Optional<Tax> resStateTax = taxRepository.findById(invoiceState);
+        if (!resStateTax.isPresent()) return null;
+        invoice.setTax(invoice.getSubtotal().multiply(resStateTax.get().getRate()));
+
 
         // Calculate total
-        BigDecimal deductible = invoice.getProcessingFee().add(invoice.getTax());
-        if (invoice.getQuantity() > 15.49) deductible.add(new BigDecimal(15.49));
-        BigDecimal total = subtotal.subtract(deductible);
-
+        BigDecimal total = subtotal.add(invoice.getProcessingFee()).add(invoice.getTax());
         invoice.setTotal(total);
 
         // save invoice and return
         invoiceRepository.save(invoice);
+
+        // Reduce product quantity
+        if (itemType.equals(consoleKey)) {
+            consoleProduct.setQuantity(consoleProduct.getQuantity()-invoice.getQuantity());
+            consoleRepository.save(consoleProduct);
+        } else if (itemType.equals(gameKey)) {
+            gameProduct.setQuantity(gameProduct.getQuantity()-invoice.getQuantity());
+            gameRepository.save(gameProduct);
+        } else if (itemType.equals(tshirtKey)) {
+            tshirtProduct.setQuantity(tshirtProduct.getQuantity()-invoice.getQuantity());
+            tshirtRepository.save(tshirtProduct);
+        }
 
         return invoice;
     }

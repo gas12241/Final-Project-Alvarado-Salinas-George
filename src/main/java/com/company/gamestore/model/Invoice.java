@@ -23,7 +23,6 @@ public class Invoice implements Serializable {
     @Size(max = 50)
     private String name;
 
-    @Null
     @Size(max = 100)
     private String street;
 
@@ -35,7 +34,7 @@ public class Invoice implements Serializable {
     @Size(max = 20)
     private  String state;
 
-    @Null
+
     @Size(max = 10)
     private String zipcode;
 

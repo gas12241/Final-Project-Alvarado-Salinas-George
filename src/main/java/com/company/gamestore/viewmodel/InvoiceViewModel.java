@@ -11,13 +11,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class InvoiceViewModel implements Serializable {
     @NotNull
     @Size(max = 50)
     private String name;
 
-    @Null
     @Size(max = 100)
     private String street;
 
@@ -29,7 +29,6 @@ public class InvoiceViewModel implements Serializable {
     @Size(max = 20)
     private  String state;
 
-    @Null
     @Size(max = 10)
     private String zipcode;
 
@@ -40,12 +39,9 @@ public class InvoiceViewModel implements Serializable {
     @NotNull
     private int itemId;
 
-    @NotNull
-    private BigDecimal unitPrice;
 
     @NotNull
     private int quantity;
-
 
 
     public String getName() {
