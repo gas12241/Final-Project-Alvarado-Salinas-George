@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @Component
-public class ServiceLayer {
+public class InvoiceServiceLayer {
 
     private ConsoleRepository consoleRepository;
     private FeeRepository feeRepository;
@@ -21,7 +21,7 @@ public class ServiceLayer {
 
 
     @Autowired
-    public ServiceLayer(
+    public InvoiceServiceLayer(
             ConsoleRepository consoleRepository,
             FeeRepository feeRepository,
             GameRepository gameRepository,
@@ -38,9 +38,10 @@ public class ServiceLayer {
     }
 
     @Transactional
-    public Invoice saveInvoice(Invoice invoice) {
+    public Invoice save(Invoice invoice) {
         int itemId = invoice.getItemId();
         String itemType = invoice.getItemType();
+        int productQuantity = 0;
         Boolean isPresent = false;
         BigDecimal productPrice = new BigDecimal(0);
 
@@ -53,7 +54,7 @@ public class ServiceLayer {
 
         // Set invoice tax
         Optional<Tax> resStateTax = taxRepository.findById(invoiceState);
-        if (resStateTax.isPresent()) return null;
+        if (!resStateTax.isPresent()) return null;
         invoice.setTax(resStateTax.get().getRate());
 
         // Verify if valid product type is provided
@@ -64,19 +65,26 @@ public class ServiceLayer {
         if (itemType.equals(consoleKey)) {
             Optional<Console> res = consoleRepository.findById(itemId);
             isPresent = res.isPresent();
-            if (isPresent) productPrice = res.get().getPrice();
+            productPrice = res.get().getPrice();
+            productQuantity = res.get().getQuantity();
 
         } else if (itemType.equals(gameKey)) {
             Optional<Game> res = gameRepository.findById(itemId);
             isPresent = res.isPresent();
-            if (isPresent) productPrice = res.get().getPrice();
+            productPrice = res.get().getPrice();
+            productQuantity = res.get().getQuantity();
         } else if (itemType.equals(tshirtKey)) {
             Optional<Tshirt> res = tshirtRepository.findById(itemId);
             isPresent = res.isPresent();
-            if (isPresent) productPrice = res.get().getPrice();
+            productPrice = res.get().getPrice();
+            productQuantity = res.get().getQuantity();
         }
 
+        // Return null if item does not exit
         if (!isPresent) return null;
+
+        // Check if product there are enough product  quantity
+        if(productQuantity <= 0 || productQuantity < invoice.getQuantity()) return  null;
 
         // Set processing fee
         Optional<Fee> resFee = feeRepository.findById(invoice.getItemType());
@@ -90,13 +98,22 @@ public class ServiceLayer {
         BigDecimal subtotal = productPrice.multiply(new BigDecimal(invoice.getQuantity()));
         invoice.setSubtotal(subtotal);
 
+
         // Calculate total
-        BigDecimal total = subtotal.subtract(invoice.getProcessingFee()).subtract(invoice.getTax());
+        BigDecimal deductible = invoice.getProcessingFee().add(invoice.getTax());
+        if (invoice.getQuantity() > 15.49) deductible.add(new BigDecimal(15.49));
+        BigDecimal total = subtotal.subtract(deductible);
+
         invoice.setTotal(total);
 
         // save invoice and return
         invoiceRepository.save(invoice);
 
         return invoice;
+    }
+
+
+    public void deleteAll() {
+        invoiceRepository.deleteAll();
     }
 }

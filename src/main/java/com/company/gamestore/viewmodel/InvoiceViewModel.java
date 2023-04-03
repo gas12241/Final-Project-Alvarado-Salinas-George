@@ -1,19 +1,52 @@
 package com.company.gamestore.viewmodel;
 
 import com.company.gamestore.model.Invoice;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class InvoiceViewModel {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class InvoiceViewModel implements Serializable {
+    @NotNull
+    @Size(max = 50)
     private String name;
+
+    @Null
+    @Size(max = 100)
     private String street;
+
+    @NotNull
+    @Size(max = 50)
     private String city;
+
+    @NotNull
+    @Size(max = 20)
     private  String state;
+
+    @Null
+    @Size(max = 10)
     private String zipcode;
+
+    @NotNull
+    @Size(max = 50)
     private String itemType;
+
+    @NotNull
     private int itemId;
+
+    @NotNull
+    private BigDecimal unitPrice;
+
+    @NotNull
     private int quantity;
+
+
 
     public String getName() {
         return name;
