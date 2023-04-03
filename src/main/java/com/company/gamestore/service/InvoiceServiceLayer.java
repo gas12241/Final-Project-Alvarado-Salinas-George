@@ -42,7 +42,6 @@ public class InvoiceServiceLayer {
         int itemId = invoice.getItemId();
         String itemType = invoice.getItemType().toLowerCase();
         int productQuantity = 0;
-        Boolean isPresent = false;
         BigDecimal productPrice = new BigDecimal(0);
 
         String consoleKey = "console";
@@ -54,9 +53,6 @@ public class InvoiceServiceLayer {
         Tshirt tshirtProduct=null;
 
 
-
-
-
         // Verify if valid product type is provided
         Boolean isValidItemType = itemType.equals(consoleKey) || itemType.equals(gameKey) || itemType.equals(tshirtKey);
         if (!isValidItemType) return null;
@@ -64,43 +60,48 @@ public class InvoiceServiceLayer {
         // Verify if product exists, check if quantity is available, and set the product price
         if (itemType.equals(consoleKey)) {
             Optional<Console> res = consoleRepository.findById(itemId);
-            isPresent = res.isPresent();
+            if (res.isPresent() == false) {
+                return null;
+            }
             productPrice = res.get().getPrice();
             productQuantity = res.get().getQuantity();
             consoleProduct = res.get();
 
         } else if (itemType.equals(gameKey)) {
             Optional<Game> res = gameRepository.findById(itemId);
-            isPresent = res.isPresent();
+            if (res.isPresent()== false) {
+                return null;
+            }
             productPrice = res.get().getPrice();
             productQuantity = res.get().getQuantity();
             gameProduct = res.get();
-        } else if (itemType.equals(tshirtKey)) {
+        } else  {
             Optional<Tshirt> res = tshirtRepository.findById(itemId);
-            isPresent = res.isPresent();
+            if (res.isPresent() == false) {
+                return null;
+            }
             productPrice = res.get().getPrice();
             productQuantity = res.get().getQuantity();
             tshirtProduct = res.get();
         }
 
-        // Return null if item does not exit
-        if (!isPresent) return null;
 
         // set unit price
         invoice.setUnitPrice(productPrice);
-
-
-
-
 
         // Check if product there are enough product  quantity
         if(productQuantity <= 0 || productQuantity < invoice.getQuantity()) return  null;
 
         // Set processing fee
         Optional<Fee> resFee = feeRepository.findById(invoice.getItemType());
+        if (!resFee.isPresent()) {
+            return null;
+        }
         BigDecimal invoiceProcessingFee =  resFee.get().getFee();
         if (invoice.getQuantity() > 10) invoice.setProcessingFee(invoiceProcessingFee.add(BigDecimal.valueOf(15.49)));
-        else invoice.setProcessingFee(invoiceProcessingFee);
+        else {
+            invoice.setProcessingFee(invoiceProcessingFee);
+        }
 
         // Set product id
         invoice.setItemId(itemId);
@@ -122,7 +123,7 @@ public class InvoiceServiceLayer {
         invoice.setTotal(total);
 
         // save invoice and return
-        invoiceRepository.save(invoice);
+        invoice = invoiceRepository.save(invoice);
 
         // Reduce product quantity
         if (itemType.equals(consoleKey)) {
@@ -131,7 +132,7 @@ public class InvoiceServiceLayer {
         } else if (itemType.equals(gameKey)) {
             gameProduct.setQuantity(gameProduct.getQuantity()-invoice.getQuantity());
             gameRepository.save(gameProduct);
-        } else if (itemType.equals(tshirtKey)) {
+        } else  {
             tshirtProduct.setQuantity(tshirtProduct.getQuantity()-invoice.getQuantity());
             tshirtRepository.save(tshirtProduct);
         }

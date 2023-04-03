@@ -16,51 +16,46 @@ public class Invoice implements Serializable {
     @Id
     @Column(name = "invoice_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
+
     private int invoiceId;
 
-    @NotNull
-    @Size(max = 50)
     private String name;
 
-    @Size(max = 100)
+
     private String street;
 
-    @NotNull
-    @Size(max = 50)
+
     private String city;
 
-    @NotNull
-    @Size(max = 20)
+
     private  String state;
 
 
-    @Size(max = 10)
+
     private String zipcode;
 
-    @NotNull
-    @Size(max = 50)
+
     private String itemType;
 
-    @NotNull
+
     private int itemId;
 
-    @NotNull
+
     private BigDecimal unitPrice;
 
-    @NotNull
+
     private int quantity;
 
-    @NotNull
+
     private BigDecimal subtotal;
 
-    @NotNull
+
     private BigDecimal tax;
 
-    @NotNull
+
     private BigDecimal processingFee;
 
-    @NotNull
+
     private BigDecimal total;
 
 
@@ -175,6 +170,26 @@ public class Invoice implements Serializable {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "invoiceId=" + invoiceId +
+                ", name='" + name + '\'' +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipcode='" + zipcode + '\'' +
+                ", itemType='" + itemType + '\'' +
+                ", itemId=" + itemId +
+                ", unitPrice=" + unitPrice +
+                ", quantity=" + quantity +
+                ", subtotal=" + subtotal +
+                ", tax=" + tax +
+                ", processingFee=" + processingFee +
+                ", total=" + total +
+                '}';
     }
 
     @Override

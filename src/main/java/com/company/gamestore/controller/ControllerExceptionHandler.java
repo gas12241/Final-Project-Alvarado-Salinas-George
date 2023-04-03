@@ -25,7 +25,7 @@ public class ControllerExceptionHandler {
     // This status means: the request was syntactically correct, but that the service can't process it because it doesn't meet some business rule.
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ResponseEntity<List<CustomErrorResponse>> controllerValidationError(MethodArgumentNotValidException e) {
+    public ResponseEntity<List<CustomErrorResponse>> c(MethodArgumentNotValidException e) {
         // BindingResult holds the validation errors
         BindingResult result = e.getBindingResult();
         // Validation errors are stored in FieldError objects
