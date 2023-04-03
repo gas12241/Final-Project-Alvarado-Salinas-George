@@ -81,9 +81,9 @@ public class InvoiceServiceLayerTest {
         invoice.setItemType("tshirt");
         invoice.setItemId(tshirt.getTshirtId());
         invoice.setQuantity(10);
-        invoiceServiceLayer.save(invoice);
+        Invoice savedInvoice = invoiceServiceLayer.save(invoice);
 
-        Optional<Invoice> invoiceRes = invoiceRepository.findById(invoice.getInvoiceId());
-        assertEquals(invoiceRes.get(), invoice);
+        Optional<Invoice> invoiceRes = invoiceRepository.findById(savedInvoice.getInvoiceId());
+        assertEquals(invoiceRes.get(), savedInvoice);
     }
 }
