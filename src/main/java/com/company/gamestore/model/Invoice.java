@@ -2,6 +2,7 @@ package com.company.gamestore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
@@ -54,12 +55,16 @@ public class Invoice implements Serializable {
     @NotNull
     private BigDecimal subtotal;
 
+
+    @Digits(integer=8, fraction=2)
     @NotNull
     private BigDecimal tax;
 
+    @Digits(integer=8, fraction=2)
     @NotNull
     private BigDecimal processingFee;
 
+    @Digits(integer=8, fraction=2)
     @NotNull
     private BigDecimal total;
 
@@ -216,4 +221,23 @@ public class Invoice implements Serializable {
                 getTotal());
     }
 
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "invoiceId=" + invoiceId +
+                ", name='" + name + '\'' +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipcode='" + zipcode + '\'' +
+                ", itemType='" + itemType + '\'' +
+                ", itemId=" + itemId +
+                ", unitPrice=" + unitPrice +
+                ", quantity=" + quantity +
+                ", subtotal=" + subtotal +
+                ", tax=" + tax +
+                ", processingFee=" + processingFee +
+                ", total=" + total +
+                '}';
+    }
 }

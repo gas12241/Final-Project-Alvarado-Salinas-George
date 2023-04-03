@@ -56,7 +56,7 @@ public class InvoiceServiceLayerTest {
         Invoice invoice = new Invoice();
 
 
-        fee.setProductType("Candy");
+        fee.setProductType("tshirt");
         fee.setFee(BigDecimal.valueOf(.99));
         feeRepository.save(fee);
 
@@ -73,6 +73,7 @@ public class InvoiceServiceLayerTest {
         tshirt.setQuantity(100);
         tshirtRepository.save(tshirt);
 
+
         invoice.setName("John Doe");
         invoice.setStreet("100 Happy Ave");
         invoice.setCity("Zootopea");
@@ -84,6 +85,8 @@ public class InvoiceServiceLayerTest {
         Invoice savedInvoice = invoiceServiceLayer.save(invoice);
 
         Optional<Invoice> invoiceRes = invoiceRepository.findById(savedInvoice.getInvoiceId());
+        System.out.println(invoiceRes.get());
+        System.out.println(invoiceRes.get());
         assertEquals(invoiceRes.get(), savedInvoice);
     }
 }

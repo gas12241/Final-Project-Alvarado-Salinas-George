@@ -59,7 +59,7 @@ public class InvoiceServiceLayer {
 
         // Verify if valid product type is provided
         Boolean isValidItemType = itemType.equals(consoleKey) || itemType.equals(gameKey) || itemType.equals(tshirtKey);
-        if (!isValidItemType) return null;
+        if (!isValidItemType) throw new IllegalArgumentException("Invalid item type provided");
 
         // Verify if product exists, check if quantity is available, and set the product price
         if (itemType.equals(consoleKey)) {
@@ -84,17 +84,15 @@ public class InvoiceServiceLayer {
         }
 
         // Return null if item does not exit
-        if (!isPresent) return null;
+        if (!isPresent)  throw new IllegalArgumentException("Item does not exist");;
 
         // set unit price
         invoice.setUnitPrice(productPrice);
 
 
 
-
-
         // Check if product there are enough product  quantity
-        if(productQuantity <= 0 || productQuantity < invoice.getQuantity()) return  null;
+        if(productQuantity <= 0 || productQuantity < invoice.getQuantity())  throw new IllegalArgumentException("Order quantity too many");;
 
         // Set processing fee
         Optional<Fee> resFee = feeRepository.findById(invoice.getItemType());
@@ -113,13 +111,13 @@ public class InvoiceServiceLayer {
 
         // Set invoice tax
         Optional<Tax> resStateTax = taxRepository.findById(invoiceState);
-        if (!resStateTax.isPresent()) return null;
-        invoice.setTax(invoice.getSubtotal().multiply(resStateTax.get().getRate()));
+        if (!resStateTax.isPresent()) throw new IllegalArgumentException("Invalid state provided");;;
+        invoice.setTax(invoice.getSubtotal().multiply(resStateTax.get().getRate()).stripTrailingZeros());
 
 
         // Calculate total
         BigDecimal total = subtotal.add(invoice.getProcessingFee()).add(invoice.getTax());
-        invoice.setTotal(total);
+        invoice.setTotal(total.stripTrailingZeros());
 
         // save invoice and return
         invoiceRepository.save(invoice);
