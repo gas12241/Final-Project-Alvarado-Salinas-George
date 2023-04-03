@@ -3,7 +3,7 @@ package com.company.gamestore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -30,9 +30,13 @@ public class Console implements Serializable {
     private String processor;
 
     @NotNull(message = "Price cannot be null.")
+    @DecimalMax(value = "999999.99", inclusive = true, message = "Price must be less than 1,000,000.00")
+    @DecimalMin(value = "0.00", inclusive = true, message = "Price cannot be less than 0.00")
     private BigDecimal price;
 
     @NotNull(message = "Quantity cannot be null.")
+    @Max(value = 999, message = "You can only order less than 1000 consoles")
+    @Min(value = 0, message = "You cannot have negative consoles")
     private Integer quantity;
 
     public Integer getConsole_id() {
