@@ -17,7 +17,7 @@ public class InvoiceController {
 
     @PostMapping(path = "/invoices")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Invoice createInvoice(@RequestAttribute InvoiceViewModel invoiceViewModel) {
+    public Invoice createInvoice(@RequestBody InvoiceViewModel invoiceViewModel) {
         Invoice invoice = new Invoice();
         invoice.setName(invoiceViewModel.getName());
         invoice.setStreet(invoiceViewModel.getStreet());
@@ -31,7 +31,7 @@ public class InvoiceController {
         Invoice saveInvoice = invoiceServiceLayer.save(invoice);
 
         if (saveInvoice == null) {
-            throw new IllegalArgumentException("Invalid input Provided");
+            throw new IllegalArgumentException("Invalid input provided");
         }
 
         return saveInvoice;
