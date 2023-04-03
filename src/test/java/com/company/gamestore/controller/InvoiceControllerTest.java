@@ -1,6 +1,8 @@
 package com.company.gamestore.controller;
 
-import com.company.gamestore.model.Invoice;
+import com.company.gamestore.model.Fee;
+import com.company.gamestore.model.Tax;
+import com.company.gamestore.model.Tshirt;
 import com.company.gamestore.repository.FeeRepository;
 import com.company.gamestore.repository.TaxRepository;
 import com.company.gamestore.repository.TshirtRepository;
@@ -17,6 +19,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,7 +49,27 @@ public class InvoiceControllerTest {
 
     @Test
     public void createInvoice() throws Exception {
+        Tax tax = new Tax();
+        Fee fee = new Fee();
+        Tshirt tshirt = new Tshirt();
 
+
+        fee.setProductType("tshirt");
+        fee.setFee(BigDecimal.valueOf(.99));
+        when(feeRepository.findById(fee.getProductType())).thenReturn(Optional.of(fee));
+
+        tax.setState("PA");
+        tax.setRate(BigDecimal.valueOf(.075));
+        when(taxRepository.findById(tax.getState())).thenReturn(Optional.of(tax));
+
+        tshirt.setColor("green");
+        tshirt.setDescription("nike t-shirt for children");
+
+        tshirt.setPrice(BigDecimal.valueOf(12L, 2));
+
+        tshirt.setSize("large");
+        tshirt.setQuantity(100);
+        when(tshirtRepository.findById(tshirt.getTshirtId())).thenReturn(Optional.of(tshirt));
 
         InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
 
@@ -51,10 +77,10 @@ public class InvoiceControllerTest {
         invoiceViewModel.setName("John Doe");
         invoiceViewModel.setStreet("1000 Happy Ave");
         invoiceViewModel.setCity("Norfolk");
-        invoiceViewModel.setState("NY");
+        invoiceViewModel.setState(tax.getState());
         invoiceViewModel.setZipcode("12345");
         invoiceViewModel.setItemType("tshirt");
-        invoiceViewModel.setItemId(3);
+        invoiceViewModel.setItemId(tshirt.getTshirtId());
         invoiceViewModel.setQuantity(10);
 
         String inputJson = mapper.writeValueAsString(invoiceViewModel);

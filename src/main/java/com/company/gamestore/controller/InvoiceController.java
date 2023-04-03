@@ -30,9 +30,6 @@ public class InvoiceController {
 
         Invoice saveInvoice = invoiceServiceLayer.save(invoice);
 
-        if (saveInvoice == null) {
-            throw new IllegalArgumentException("Invalid input provided");
-        }
 
         return saveInvoice;
     }
