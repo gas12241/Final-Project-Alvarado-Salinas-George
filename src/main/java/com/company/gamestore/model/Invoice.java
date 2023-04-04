@@ -2,10 +2,7 @@ package com.company.gamestore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -56,15 +53,18 @@ public class Invoice implements Serializable {
     private BigDecimal subtotal;
 
 
-    @Digits(integer=8, fraction=2)
+    @DecimalMin(value = "0.01", inclusive = true, message = "Price cannot be null and must be at least 0.01")
+    @DecimalMax(value = "999999.99", inclusive = true, message = "Value must be less than {value}")
     @NotNull
     private BigDecimal tax;
 
-    @Digits(integer=8, fraction=2)
+    @DecimalMin(value = "0.01", inclusive = true, message = "Price cannot be null and must be at least 0.01")
+    @DecimalMax(value = "999999.99", inclusive = true, message = "Value must be less than {value}")
     @NotNull
     private BigDecimal processingFee;
 
-    @Digits(integer=8, fraction=2)
+    @DecimalMin(value = "0.01", inclusive = true, message = "Price cannot be null and must be at least 0.01")
+    @DecimalMax(value = "999999.99", inclusive = true, message = "Value must be less than {value}")
     @NotNull
     private BigDecimal total;
 
