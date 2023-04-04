@@ -57,7 +57,7 @@ public class ConsoleRepositoryTest {
         console.setQuantity(1);
         console = consoleRepository.save(console);
 
-        Optional<Console> console1 = consoleRepository.findById(console.getConsole_id());
+        Optional<Console> console1 = consoleRepository.findById(console.getConsoleId());
         assertEquals(console1.get(),console);
     }
 
@@ -98,7 +98,7 @@ public class ConsoleRepositoryTest {
         console.setProcessor("MMD 4500");
         console = consoleRepository.save(console);
 
-        Optional<Console> console1 = consoleRepository.findById(console.getConsole_id());
+        Optional<Console> console1 = consoleRepository.findById(console.getConsoleId());
         assertEquals(console1.get(),console);
     }
 
@@ -112,8 +112,8 @@ public class ConsoleRepositoryTest {
         console.setQuantity(1);
         console = consoleRepository.save(console);
 
-        consoleRepository.deleteById(console.getConsole_id());
-        Optional<Console> console1 = consoleRepository.findById(console.getConsole_id());
+        consoleRepository.deleteById(console.getConsoleId());
+        Optional<Console> console1 = consoleRepository.findById(console.getConsoleId());
         assertFalse(console1.isPresent());
     }
 
