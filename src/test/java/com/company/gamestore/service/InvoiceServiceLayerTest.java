@@ -48,22 +48,22 @@ public class InvoiceServiceLayerTest {
         tshirtRepository.deleteAll();
     }
 
-    @Test
-    public void saveInvoice() {
-        Tax tax = new Tax();
+    public Fee createFee() {
         Fee fee = new Fee();
-        Tshirt tshirt = new Tshirt();
-        Invoice invoice = new Invoice();
-
-
         fee.setProductType("tshirt");
         fee.setFee(BigDecimal.valueOf(.99));
-        feeRepository.save(fee);
+        return fee;
+    }
 
+    public Tax createTax() {
+        Tax tax = new Tax();
         tax.setState("PA");
         tax.setRate(BigDecimal.valueOf(.075));
-        taxRepository.save(tax);
+        return tax;
+    }
 
+    public Tshirt createTShirt() {
+        Tshirt tshirt = new Tshirt();
         tshirt.setColor("green");
         tshirt.setDescription("nike t-shirt for children");
 
@@ -71,9 +71,11 @@ public class InvoiceServiceLayerTest {
 
         tshirt.setSize("large");
         tshirt.setQuantity(100);
-        tshirtRepository.save(tshirt);
+        return tshirt;
+    }
 
-
+    public Invoice createInvoice(Tax tax, Tshirt tshirt) {
+        Invoice invoice = new Invoice();
         invoice.setName("John Doe");
         invoice.setStreet("100 Happy Ave");
         invoice.setCity("Zootopea");
@@ -82,11 +84,44 @@ public class InvoiceServiceLayerTest {
         invoice.setItemType("tshirt");
         invoice.setItemId(tshirt.getTshirtId());
         invoice.setQuantity(10);
+        return invoice;
+    }
+
+    @Test
+    public void save() throws Exception {
+        Fee fee = createFee();
+        feeRepository.save(fee);
+
+        Tax tax = createTax();
+        taxRepository.save(tax);
+
+        Tshirt tshirt = createTShirt();
+        tshirtRepository.save(tshirt);
+
+        Invoice invoice = createInvoice(tax, tshirt);
         Invoice savedInvoice = invoiceServiceLayer.save(invoice);
 
         Optional<Invoice> invoiceRes = invoiceRepository.findById(savedInvoice.getInvoiceId());
-        System.out.println(invoiceRes.get());
-        System.out.println(invoiceRes.get());
         assertEquals(invoiceRes.get(), savedInvoice);
     }
+
+
+    @Test
+    public void findAll() throws Exception {
+        Fee fee = createFee();
+        feeRepository.save(fee);
+
+        Tax tax = createTax();
+        taxRepository.save(tax);
+
+        Tshirt tshirt = createTShirt();
+        tshirtRepository.save(tshirt);
+
+        Invoice invoice = createInvoice(tax, tshirt);
+        Invoice savedInvoice = invoiceServiceLayer.save(invoice);
+
+        Optional<Invoice> invoiceRes = invoiceRepository.findById(savedInvoice.getInvoiceId());
+        assertEquals(invoiceRes.get(), savedInvoice);
+    }
+
 }
