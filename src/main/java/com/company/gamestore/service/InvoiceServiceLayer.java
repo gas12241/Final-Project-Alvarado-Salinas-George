@@ -132,12 +132,12 @@ public class InvoiceServiceLayer {
         if (!resStateTax.isPresent()) throw new IllegalArgumentException("Invalid state provided");
         ;
         ;
-        invoice.setTax(invoice.getSubtotal().multiply(resStateTax.get().getRate()).stripTrailingZeros().setScale(2, RoundingMode.HALF_EVEN));
+        invoice.setTax(invoice.getSubtotal().multiply(resStateTax.get().getRate()).stripTrailingZeros());
 
 
         // Calculate total
         BigDecimal total = subtotal.add(invoice.getProcessingFee()).add(invoice.getTax());
-        invoice.setTotal(total.setScale(2, RoundingMode.CEILING));
+        invoice.setTotal(total.setScale(2, RoundingMode.HALF_EVEN));
 
         // save invoice and return
         invoiceRepository.save(invoice);
