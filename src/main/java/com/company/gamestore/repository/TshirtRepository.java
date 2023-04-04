@@ -10,5 +10,9 @@ import java.util.List;
 @Repository
 public interface TshirtRepository extends JpaRepository<Tshirt, Integer> {
     List<Tshirt> findByColor(String color);
+
+    @Override
+    void deleteById(Integer integer);
+
     List<Tshirt> findBySize(String size);
 }
