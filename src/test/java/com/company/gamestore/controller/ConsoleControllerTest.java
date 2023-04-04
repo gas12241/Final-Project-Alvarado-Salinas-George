@@ -43,7 +43,7 @@ public class ConsoleControllerTest {
         console.setManufacturer("Games Live");
         console.setProcessor("MMD 4000");
         console.setQuantity(1);
-        console.setConsole_id(1);
+        console.setConsoleId(1);
         String inputJson = mapper.writeValueAsString(console);
 
         mockMvc.perform(post("/console").content(inputJson).contentType(MediaType.APPLICATION_JSON))
@@ -59,7 +59,7 @@ public class ConsoleControllerTest {
         console.setManufacturer("Games Live");
         console.setProcessor("MMD 4000");
         console.setQuantity(1);
-        console.setConsole_id(1);
+        console.setConsoleId(1);
         String inputJson = mapper.writeValueAsString(console);
 
         mockMvc.perform(put("/console").content(inputJson).contentType(MediaType.APPLICATION_JSON))

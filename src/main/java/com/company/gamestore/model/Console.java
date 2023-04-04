@@ -17,7 +17,7 @@ public class Console implements Serializable {
     @Column(name = "console_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull(message = "Console_id cannot be null.")
-    private Integer console_id;
+    private Integer consoleId;
 
     @NotNull(message = "Model cannot be null.")
     @Size(max = 50, message = "Model can not be larger than 50 characters.")
@@ -27,8 +27,9 @@ public class Console implements Serializable {
     @Size(max = 50, message = "Manufacturer can not be larger than 50 characters.")
     private String manufacturer;
 
+    @Column(name = "memory_amount")
     @Size(max = 20, message = "Memory Amount can not be larger than 20 characters.")
-    private String memory_amount;
+    private String memoryAmount;
 
     @Size(max = 20, message = "Processor can not be larger than 20 characters.")
     private String processor;
@@ -43,12 +44,12 @@ public class Console implements Serializable {
     @Min(value = 0, message = "You cannot have negative consoles")
     private Integer quantity;
 
-    public Integer getConsole_id() {
-        return console_id;
+    public Integer getConsoleId() {
+        return consoleId;
     }
 
-    public void setConsole_id(Integer console_id) {
-        this.console_id = console_id;
+    public void setConsoleId(Integer consoleId) {
+        this.consoleId = consoleId;
     }
 
     public String getModel() {
@@ -67,12 +68,12 @@ public class Console implements Serializable {
         this.manufacturer = manufacturer;
     }
 
-    public String getMemory_amount() {
-        return memory_amount;
+    public String getMemoryAmount() {
+        return memoryAmount;
     }
 
-    public void setMemory_amount(String memory_amount) {
-        this.memory_amount = memory_amount;
+    public void setMemoryAmount(String memoryAmount) {
+        this.memoryAmount = memoryAmount;
     }
 
     public String getProcessor() {
@@ -104,21 +105,21 @@ public class Console implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Console console = (Console) o;
-        return Objects.equals(console_id, console.console_id) && model.equals(console.model) && manufacturer.equals(console.manufacturer) && Objects.equals(memory_amount, console.memory_amount) && Objects.equals(processor, console.processor) && price.equals(console.price) && Objects.equals(quantity, console.quantity);
+        return Objects.equals(getConsoleId(), console.getConsoleId()) && Objects.equals(getModel(), console.getModel()) && Objects.equals(getManufacturer(), console.getManufacturer()) && Objects.equals(getMemoryAmount(), console.getMemoryAmount()) && Objects.equals(getProcessor(), console.getProcessor()) && Objects.equals(getPrice(), console.getPrice()) && Objects.equals(getQuantity(), console.getQuantity());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(console_id, model, manufacturer, memory_amount, processor, price, quantity);
+        return Objects.hash(getConsoleId(), getModel(), getManufacturer(), getMemoryAmount(), getProcessor(), getPrice(), getQuantity());
     }
 
     @Override
     public String toString() {
         return "Console{" +
-                "console_id=" + console_id +
+                "consoleId=" + consoleId +
                 ", model='" + model + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +
-                ", memory_amount='" + memory_amount + '\'' +
+                ", memoryAmount='" + memoryAmount + '\'' +
                 ", processor='" + processor + '\'' +
                 ", price=" + price +
                 ", quantity=" + quantity +
