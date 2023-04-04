@@ -29,12 +29,12 @@ public class Tax implements Serializable {
      */
     @Id
     @Column(name = "state")
-    @Size(max = 2, message = "State Entry should be no more than two characters long.")
+    @Size(max = 2, message = "State entry should be no more than two characters long.")
     private String state;
 
-    @NotNull
-    @DecimalMin(value = "0.00", inclusive = true, message = "Tax rate cannot be null and must be above 0.00")
-    @Digits(integer = 0, fraction = 8, message = "The tax has up to 8 numbers after the decimal")
+    @NotNull(message = "Rate cannot be null.")
+    @DecimalMin(value = "0.00", inclusive = true, message = "Tax rate cannot be null and must be above 0.00.")
+    @Digits(integer = 6, fraction = 2, message = "The tax has up to 8 numbers total with 2 after the decimal")
     private BigDecimal rate;
 
     /**
