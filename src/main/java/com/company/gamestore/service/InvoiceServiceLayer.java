@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -37,6 +38,23 @@ public class InvoiceServiceLayer {
         this.invoiceRepository = invoiceRepository;
     }
 
+    public List<Invoice> findAll() {
+        return invoiceRepository.findAll();
+    }
+
+    ;
+
+    public Invoice findById(int invoiceId) {
+        Optional<Invoice> res = invoiceRepository.findById(invoiceId);
+        return res.isPresent() ? res.get() : null;
+    }
+
+    public List<Invoice> findByName(String name) {
+        return invoiceRepository.findByName(name);
+    }
+
+    ;
+
     @Transactional
     public Invoice save(Invoice invoice) {
         int itemId = invoice.getItemId();
@@ -49,12 +67,9 @@ public class InvoiceServiceLayer {
         String gameKey = "game";
         String tshirtKey = "tshirt";
 
-        Console consoleProduct=null;
-        Game gameProduct=null;
-        Tshirt tshirtProduct=null;
-
-
-
+        Console consoleProduct = null;
+        Game gameProduct = null;
+        Tshirt tshirtProduct = null;
 
 
         // Verify if valid product type is provided
@@ -84,19 +99,21 @@ public class InvoiceServiceLayer {
         }
 
         // Return null if item does not exit
-        if (!isPresent)  throw new IllegalArgumentException("Item does not exist");;
+        if (!isPresent) throw new IllegalArgumentException("Item does not exist");
+        ;
 
         // set unit price
         invoice.setUnitPrice(productPrice);
 
 
-
         // Check if product there are enough product  quantity
-        if(productQuantity <= 0 || productQuantity < invoice.getQuantity())  throw new IllegalArgumentException("Order quantity too many");;
+        if (productQuantity <= 0 || productQuantity < invoice.getQuantity())
+            throw new IllegalArgumentException("Order quantity too many");
+        ;
 
         // Set processing fee
         Optional<Fee> resFee = feeRepository.findById(invoice.getItemType());
-        BigDecimal invoiceProcessingFee =  resFee.get().getFee();
+        BigDecimal invoiceProcessingFee = resFee.get().getFee();
         if (invoice.getQuantity() > 10) invoice.setProcessingFee(invoiceProcessingFee.add(BigDecimal.valueOf(15.49)));
         else invoice.setProcessingFee(invoiceProcessingFee);
 
@@ -111,7 +128,9 @@ public class InvoiceServiceLayer {
 
         // Set invoice tax
         Optional<Tax> resStateTax = taxRepository.findById(invoiceState);
-        if (!resStateTax.isPresent()) throw new IllegalArgumentException("Invalid state provided");;;
+        if (!resStateTax.isPresent()) throw new IllegalArgumentException("Invalid state provided");
+        ;
+        ;
         invoice.setTax(invoice.getSubtotal().multiply(resStateTax.get().getRate()).stripTrailingZeros());
 
 
@@ -124,13 +143,13 @@ public class InvoiceServiceLayer {
 
         // Reduce product quantity
         if (itemType.equals(consoleKey)) {
-            consoleProduct.setQuantity(consoleProduct.getQuantity()-invoice.getQuantity());
+            consoleProduct.setQuantity(consoleProduct.getQuantity() - invoice.getQuantity());
             consoleRepository.save(consoleProduct);
         } else if (itemType.equals(gameKey)) {
-            gameProduct.setQuantity(gameProduct.getQuantity()-invoice.getQuantity());
+            gameProduct.setQuantity(gameProduct.getQuantity() - invoice.getQuantity());
             gameRepository.save(gameProduct);
         } else if (itemType.equals(tshirtKey)) {
-            tshirtProduct.setQuantity(tshirtProduct.getQuantity()-invoice.getQuantity());
+            tshirtProduct.setQuantity(tshirtProduct.getQuantity() - invoice.getQuantity());
             tshirtRepository.save(tshirtProduct);
         }
 

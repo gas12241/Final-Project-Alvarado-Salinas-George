@@ -8,11 +8,31 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 
 public class InvoiceController {
     @Autowired
     InvoiceServiceLayer invoiceServiceLayer;
+
+    @GetMapping(path = "/invoices")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<Invoice> getAllInvoices() {
+        return invoiceServiceLayer.findAll();
+    }
+
+    @GetMapping(path = "/invoices/{invoiceId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public Invoice getInvoiceById(@PathVariable int invoiceId) {
+        return invoiceServiceLayer.findById(invoiceId);
+    }
+
+    @GetMapping(path = "/invoices/name/{name}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<Invoice> getInvoiceByName(@PathVariable String name) {
+        return invoiceServiceLayer.findByName(name);
+    }
 
 
     @PostMapping(path = "/invoices")
