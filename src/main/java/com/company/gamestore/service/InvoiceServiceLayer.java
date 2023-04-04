@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -131,12 +132,12 @@ public class InvoiceServiceLayer {
         if (!resStateTax.isPresent()) throw new IllegalArgumentException("Invalid state provided");
         ;
         ;
-        invoice.setTax(invoice.getSubtotal().multiply(resStateTax.get().getRate()).stripTrailingZeros());
+        invoice.setTax(invoice.getSubtotal().multiply(resStateTax.get().getRate()).stripTrailingZeros().setScale(2, RoundingMode.HALF_EVEN));
 
 
         // Calculate total
         BigDecimal total = subtotal.add(invoice.getProcessingFee()).add(invoice.getTax());
-        invoice.setTotal(total.stripTrailingZeros());
+        invoice.setTotal(total.setScale(2, RoundingMode.CEILING));
 
         // save invoice and return
         invoiceRepository.save(invoice);

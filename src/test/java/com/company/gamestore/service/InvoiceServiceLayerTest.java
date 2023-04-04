@@ -58,7 +58,7 @@ public class InvoiceServiceLayerTest {
     public Tax createTax() {
         Tax tax = new Tax();
         tax.setState("PA");
-        tax.setRate(BigDecimal.valueOf(.075));
+        tax.setRate(BigDecimal.valueOf(.07));
         return tax;
     }
 

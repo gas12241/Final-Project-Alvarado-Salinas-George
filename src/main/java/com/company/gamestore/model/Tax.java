@@ -34,7 +34,7 @@ public class Tax implements Serializable {
 
     @NotNull(message = "Rate cannot be null.")
     @DecimalMin(value = "0.00", inclusive = true, message = "Tax rate cannot be null and must be above 0.00.")
-    @Digits(integer = 6, fraction = 2, message = "The tax has up to 8 numbers total with 2 after the decimal")
+    @Digits(integer = 5, fraction = 3, message = "The tax has up to 8 numbers total with 3 after the decimal")
     private BigDecimal rate;
 
     /**
