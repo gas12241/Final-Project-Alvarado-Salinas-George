@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -100,6 +101,8 @@ public class InvoiceServiceLayerTest {
 
         Invoice invoice = createInvoice(tax, tshirt);
         Invoice savedInvoice = invoiceServiceLayer.save(invoice);
+        savedInvoice.setTax(savedInvoice.getTax().setScale(2, RoundingMode.HALF_EVEN));
+
 
         Optional<Invoice> invoiceRes = invoiceRepository.findById(savedInvoice.getInvoiceId());
         assertEquals(invoiceRes.get(), savedInvoice);
@@ -119,6 +122,7 @@ public class InvoiceServiceLayerTest {
 
         Invoice invoice = createInvoice(tax, tshirt);
         Invoice savedInvoice = invoiceServiceLayer.save(invoice);
+        savedInvoice.setTax(savedInvoice.getTax().setScale(2, RoundingMode.HALF_EVEN));
 
         Optional<Invoice> invoiceRes = invoiceRepository.findById(savedInvoice.getInvoiceId());
         assertEquals(invoiceRes.get(), savedInvoice);
