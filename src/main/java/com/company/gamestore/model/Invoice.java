@@ -2,10 +2,7 @@ package com.company.gamestore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -20,53 +17,55 @@ public class Invoice implements Serializable {
     @NotNull
     private int invoiceId;
 
-    @NotNull (message = "Name cannot be null.")
-    @Size(max = 50, message = "Name cannot be null or longer than 50 characters.")
+    @NotNull
+    @Size(max = 50)
     private String name;
 
-    @Size(max = 100, message = "Street cannot be longer than 100 characters.")
+    @Size(max = 100)
     private String street;
 
-    @NotNull(message = "City cannot be null.")
-    @Size(max = 50, message = "City can not be longer than 50 characters.")
+    @NotNull
+    @Size(max = 50)
     private String city;
 
-    @NotNull(message = "state cannot be null")
-    @Size(max = 20, message = "State can not be longer than 20 Characters")
+    @NotNull
+    @Size(max = 20)
     private  String state;
 
-    @Size(max = 10, message = "Zipcode can not be longer than 10 characters.")
+
+    @Size(max = 10)
     private String zipcode;
 
-    @NotNull(message = "Item Type cannot be null.")
-    @Size(max = 50, message = "Item Type cannot be longer than 50 characters.")
+    @NotNull
+    @Size(max = 50)
     private String itemType;
 
-
-    @NotNull(message = "Item Id cannot be null.")
+    @NotNull
     private int itemId;
 
-    @NotNull(message = "Unit Price cannot be null.")
-    @Digits(integer=6, fraction=2, message = "Unit Price cannot have more then 8 numbers or more than two after the decimal.")
+    @NotNull
     private BigDecimal unitPrice;
 
-    @NotNull(message = "Quantity cannot be null.")
+    @NotNull
     private int quantity;
 
-    @NotNull(message = "Sub Total cannot be null.")
-    @Digits(integer=6, fraction=2, message = "Sub Total cannot have more then 8 numbers or more than two after the decimal.")
+    @NotNull
     private BigDecimal subtotal;
 
-    @NotNull(message = "Tax cannot be null.")
-    @Digits(integer=6, fraction=2, message = "Tax cannot have more then 8 numbers or more than two after the decimal")
+
+    @DecimalMin(value = "0.01", inclusive = true, message = "Price cannot be null and must be at least 0.01")
+    @DecimalMax(value = "999999.99", inclusive = true, message = "Value must be less than {value}")
+    @NotNull
     private BigDecimal tax;
 
-    @NotNull(message = "Processing Fee cannot be null.")
-    @Digits(integer=6, fraction=2, message = "Processing fee cannot be bigger than 8 numbers with two after the decimal")
+    @DecimalMin(value = "0.01", inclusive = true, message = "Price cannot be null and must be at least 0.01")
+    @DecimalMax(value = "999999.99", inclusive = true, message = "Value must be less than {value}")
+    @NotNull
     private BigDecimal processingFee;
 
-    @NotNull(message = "Total cannot be null.")
-    @Digits(integer=6, fraction=2, message = "Total cannot be bigger than 8 numbers with two after the decimal")
+    @DecimalMin(value = "0.01", inclusive = true, message = "Price cannot be null and must be at least 0.01")
+    @DecimalMax(value = "999999.99", inclusive = true, message = "Value must be less than {value}")
+    @NotNull
     private BigDecimal total;
 
 
