@@ -17,55 +17,57 @@ public class Invoice implements Serializable {
     @NotNull
     private int invoiceId;
 
-    @NotNull
-    @Size(max = 50)
+    @NotNull(message = "name cannot be null.")
+    @Size(max = 50, message = "Name cannot be more than 50 characters.")
     private String name;
 
-    @Size(max = 100)
+    @Size(max = 100, message = "Street cannot be more than 50 characters.")
     private String street;
 
-    @NotNull
-    @Size(max = 50)
+    @NotNull(message = "City cannot be null.")
+    @Size(max = 50, message = "City cannot be more than 50 characters.")
     private String city;
 
-    @NotNull
-    @Size(max = 20)
+    @NotNull(message = "State cannot be null.")
+    @Size(max = 20, message = "State cannot be more than 20 characters.")
     private  String state;
 
 
-    @Size(max = 10)
+    @Size(max = 10, message = "Zipcode cannot be more than 10 characters")
     private String zipcode;
 
-    @NotNull
-    @Size(max = 50)
+    @NotNull(message = "Item Type cannot be null.")
+    @Size(max = 50, message = "Item Type cannot be more than 50 characters.")
     private String itemType;
 
-    @NotNull
+    @NotNull(message = "Item Id cannot be null.")
     private int itemId;
 
-    @NotNull
+    @NotNull(message = "Unit Price cannot be null.")
+    @Digits(integer = 6, fraction = 2, message = "Unit Price has to be less than 8 numbers and only have up to 2 decimal places.")
     private BigDecimal unitPrice;
 
-    @NotNull
+    @NotNull(message = "Quantity cannot be null.")
     private int quantity;
 
-    @NotNull
+    @NotNull(message = "Subtotal cannot be null.")
+    @Digits(integer = 6, fraction = 2, message = "SubTotal can have up to 8 numbers including up to 2 decimal places.")
     private BigDecimal subtotal;
 
 
     @DecimalMin(value = "0.01", inclusive = true, message = "Price cannot be null and must be at least 0.01")
     @DecimalMax(value = "999999.99", inclusive = true, message = "Value must be less than {value}")
-    @NotNull
+    @NotNull(message = "Tax cannot be null.")
     private BigDecimal tax;
 
     @DecimalMin(value = "0.01", inclusive = true, message = "Price cannot be null and must be at least 0.01")
     @DecimalMax(value = "999999.99", inclusive = true, message = "Value must be less than {value}")
-    @NotNull
+    @NotNull(message = "Processing Fee cannot be null.")
     private BigDecimal processingFee;
 
     @DecimalMin(value = "0.01", inclusive = true, message = "Price cannot be null and must be at least 0.01")
     @DecimalMax(value = "999999.99", inclusive = true, message = "Value must be less than {value}")
-    @NotNull
+    @NotNull(message = "Total cannot be null.")
     private BigDecimal total;
 
 
