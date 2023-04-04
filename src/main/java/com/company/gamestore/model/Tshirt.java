@@ -19,10 +19,10 @@ public class Tshirt implements Serializable {
     @NotNull(message = "You must supply a value for id.")
     private int tshirtId;
     @NotEmpty(message = "You must supply a value for size.")
-    @Size(max = 20, message = "Size can not larger than 20 characters.")
+    @Size(max = 20, message = "Size can not be larger than 20 characters.")
     private String size;
     @NotEmpty(message = "You must supply a value for color.")
-    @Size(max = 20, message = "Color can not larger than 20 characters.")
+    @Size(max = 20, message = "Color can not be larger than 20 characters.")
     private String color;
     @NotEmpty(message = "You must supply a value for description.")
     @Size(max = 255, message = "Description can not larger than 255 characters.")

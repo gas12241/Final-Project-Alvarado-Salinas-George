@@ -20,17 +20,21 @@ public class Console implements Serializable {
     private Integer console_id;
 
     @NotNull(message = "Model cannot be null.")
+    @Size(max = 50, message = "Model can not be larger than 50 characters.")
     private String model;
 
     @NotNull(message = "Manufacturer cannot be null.")
+    @Size(max = 50, message = "Manufacturer can not be larger than 50 characters.")
     private String manufacturer;
 
+    @Size(max = 20, message = "Memory Amount can not be larger than 20 characters.")
     private String memory_amount;
 
+    @Size(max = 20, message = "Processor can not be larger than 20 characters.")
     private String processor;
 
     @NotNull(message = "Price cannot be null.")
-    @DecimalMax(value = "999999.99", inclusive = true, message = "Price must be less than 1,000,000.00")
+    @DecimalMax(value = "999.99", inclusive = true, message = "Price must be less than 1,000.00")
     @DecimalMin(value = "0.00", inclusive = true, message = "Price cannot be less than 0.00")
     private BigDecimal price;
 

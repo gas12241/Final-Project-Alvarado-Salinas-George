@@ -26,13 +26,12 @@ public class Fee implements Serializable {
      */
     @Id
     @Column(name = "product_type")
-    @Size(max = 50, message = "Product type value can not be larger than 50 characters")
-    // @GeneratedValue(strategy = GenerationType.AUTO)
+    @Size(max = 50, message = "Product type can not be larger than 50 characters")
     private String productType;
 
-    @NotNull
+    @NotNull(message = "Fee cannot be null.")
     @DecimalMin(value = "0.00", inclusive = true, message = "Fee cannot be less than 0.00")
-    @Digits(integer = 6, fraction = 2, message = "The fee can have a total of 8 numbers WITH 2 of them being after the decimal") // Got from this https://stackoverflow.com/questions/65490099/how-to-use-digits-validation-on-integer-value
+    @Digits(integer = 6, fraction = 2, message = "Fee cannot be bigger than 8 numbers or have more than 2 after the decimal.") // Got from this https://stackoverflow.com/questions/65490099/how-to-use-digits-validation-on-integer-value
     private BigDecimal fee;
 
     /**

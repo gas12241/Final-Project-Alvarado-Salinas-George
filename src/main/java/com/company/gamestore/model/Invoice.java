@@ -20,52 +20,53 @@ public class Invoice implements Serializable {
     @NotNull
     private int invoiceId;
 
-    @NotNull
-    @Size(max = 50)
+    @NotNull (message = "Name cannot be null.")
+    @Size(max = 50, message = "Name cannot be null or longer than 50 characters.")
     private String name;
 
-    @Size(max = 100)
+    @Size(max = 100, message = "Street cannot be longer than 100 characters.")
     private String street;
 
-    @NotNull
-    @Size(max = 50)
+    @NotNull(message = "City cannot be null.")
+    @Size(max = 50, message = "City can not be longer than 50 characters.")
     private String city;
 
-    @NotNull
-    @Size(max = 20)
+    @NotNull(message = "state cannot be null")
+    @Size(max = 20, message = "State can not be longer than 20 Characters")
     private  String state;
 
-
-    @Size(max = 10)
+    @Size(max = 10, message = "Zipcode can not be longer than 10 characters.")
     private String zipcode;
 
-    @NotNull
-    @Size(max = 50)
+    @NotNull(message = "Item Type cannot be null.")
+    @Size(max = 50, message = "Item Type cannot be longer than 50 characters.")
     private String itemType;
 
-    @NotNull
+
+    @NotNull(message = "Item Id cannot be null.")
     private int itemId;
 
-    @NotNull
+    @NotNull(message = "Unit Price cannot be null.")
+    @Digits(integer=6, fraction=2, message = "Unit Price cannot have more then 8 numbers or more than two after the decimal.")
     private BigDecimal unitPrice;
 
-    @NotNull
+    @NotNull(message = "Quantity cannot be null.")
     private int quantity;
 
-    @NotNull
+    @NotNull(message = "Sub Total cannot be null.")
+    @Digits(integer=6, fraction=2, message = "Sub Total cannot have more then 8 numbers or more than two after the decimal.")
     private BigDecimal subtotal;
 
-
-    @Digits(integer=8, fraction=2)
-    @NotNull
+    @NotNull(message = "Tax cannot be null.")
+    @Digits(integer=6, fraction=2, message = "Tax cannot have more then 8 numbers or more than two after the decimal")
     private BigDecimal tax;
 
-    @Digits(integer=8, fraction=2)
-    @NotNull
+    @NotNull(message = "Processing Fee cannot be null.")
+    @Digits(integer=6, fraction=2, message = "Processing fee cannot be bigger than 8 numbers with two after the decimal")
     private BigDecimal processingFee;
 
-    @Digits(integer=8, fraction=2)
-    @NotNull
+    @NotNull(message = "Total cannot be null.")
+    @Digits(integer=6, fraction=2, message = "Total cannot be bigger than 8 numbers with two after the decimal")
     private BigDecimal total;
 
 

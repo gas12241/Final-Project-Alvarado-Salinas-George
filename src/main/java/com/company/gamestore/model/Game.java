@@ -1,8 +1,12 @@
 package com.company.gamestore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.xml.internal.ws.api.model.MEP;
+
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -18,20 +22,24 @@ public class Game implements  Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int gameId;
 
-    @NotNull
+    @NotNull(message = "Title should not be null.")
+    @Size(max = 50, message = "Title should not be longer than 50 characters.")
     private String title;
 
-    @NotNull
+    @NotNull(message = "ESRB Rating should not be null")
+    @Size(max = 50, message = "ESRB Rating should not be longer than 50 characters.")
     private String esrbRating;
 
-    @NotNull
+    @NotNull(message = "Price should not be null.")
+    @Digits(integer=3, fraction=2, message = "Price cannot have more then five numbers or more than two after the decimal.")
     private BigDecimal price;
 
-    @NotNull
+    @NotNull(message = "Description should not be null.")
+    @Size(max = 255, message = "Description should not be longer than 255 characters.")
     private String description;
 
-
-    @NotNull
+    @NotNull(message = "Studio cannot be null.")
+    @Size(max = 50, message = "Studio should not be longer than 50 characters.")
     private String studio;
 
     private int quantity;
