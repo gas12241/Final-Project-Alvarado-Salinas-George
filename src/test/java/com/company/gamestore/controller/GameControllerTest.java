@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(FeeController.class)
+@WebMvcTest(GameController.class)
 class GameControllerTest {
 
     @Autowired
@@ -47,13 +47,14 @@ class GameControllerTest {
                 "developed by Capcom Production Studio 4 and published by Capcom " +
                 "for the GameCube in 2005.");
         game.setStudio("Capcom");
+        game.setQuantity(500);
     }
 
     @Test
     void createGame() throws Exception {
         String inputJson = mapper.writeValueAsString(game);
 
-        mockMvc.perform(post("/games")
+        mockMvc.perform(post("/game")
                         .content(inputJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -65,12 +66,12 @@ class GameControllerTest {
         game.setStudio("Nintendo");
         String inputJson = mapper.writeValueAsString(game);
         mockMvc.perform(
-                        put("/games")
+                        put("/game")
                                 .content(inputJson)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
 
 
     }
@@ -89,7 +90,7 @@ class GameControllerTest {
 
         gameRepo.save(game2);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/games"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/game"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -97,33 +98,33 @@ class GameControllerTest {
     @Test
     void findGameById() throws Exception {
         String inputJson = mapper.writeValueAsString(game);
-        mockMvc.perform(MockMvcRequestBuilders.get("/games/1")).andDo(print()).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/game/1")).andDo(print()).andExpect(status().isOk());
     }
 
     @Test
     void findGamesByStudio() throws Exception {
-        mockMvc.perform(get("/games/Capcom"))
+        mockMvc.perform(get("/game/studio/capcom"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
     void findGamesByEsrbRating() throws Exception {
-        mockMvc.perform(get("/games/M"))
+        mockMvc.perform(get("/game/esrbrating/M"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
     void findGamesByTitle() throws Exception {
-        mockMvc.perform(get("/games/Resident Evil 8"))
+        mockMvc.perform(get("/game/title/Resident Evil 8"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
     void deleteGame() throws Exception {
-        mockMvc.perform(delete("/games/1"))
+        mockMvc.perform(delete("/game/1"))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }

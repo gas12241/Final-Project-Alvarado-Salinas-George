@@ -60,7 +60,7 @@ public class GameController {
     }
 
     // get games by ESRB rating
-    @GetMapping("/game/esrbrating/{esrbrating}")
+    @GetMapping("/game/esrbrating/{esrbRating}")
     @ResponseStatus(HttpStatus.OK)
     public List<Game> findGamesByEsrbRating(@PathVariable String esrbRating) {
         return gameRepo.findByEsrbRating(esrbRating);

@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -88,5 +89,26 @@ public class InvoiceControllerTest {
         mockMvc.perform(post("/invoices").content(inputJson).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated());
+    }
+
+    // "/invoices"
+    @Test
+    public void shouldGetAllInvoicesAndExpectOk() throws Exception {
+        mockMvc.perform(get("/invoices"))
+                .andDo(print()).andExpect(status().isOk());
+    }
+
+    // "/invoices/{invoiceId}"
+    @Test
+    public void shouldGetAnInvoiceByIdAndExpectOk() throws Exception {
+        mockMvc.perform(get("/invoices/12"))
+                .andDo(print()).andExpect(status().isOk());
+    }
+
+    // "/invoices/name/{name}"
+    @Test
+    public void shouldGetInvoicesByCustomerNameAndExpectOk() throws Exception {
+        mockMvc.perform(get("/invoices/name/George"))
+                .andDo(print()).andExpect(status().isOk());
     }
 }

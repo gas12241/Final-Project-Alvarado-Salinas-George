@@ -31,12 +31,12 @@ public class TaxRepositoryTest {
 
         tax1 = new Tax();
         tax1.setState("WA");
-        tax1.setRate(BigDecimal.valueOf(.0105));
+        tax1.setRate(BigDecimal.valueOf(.010));
         taxRepo.save(tax1);
 
         tax2 = new Tax();
         tax2.setState("CA");
-        tax2.setRate(BigDecimal.valueOf(.095));
+        tax2.setRate(BigDecimal.valueOf(.09));
         taxRepo.save(tax2);
     }
 
@@ -45,7 +45,7 @@ public class TaxRepositoryTest {
     public void testCreateTax() {
         Tax newTax = new Tax();
         newTax.setState("PA");
-        newTax.setRate(BigDecimal.valueOf(.075));
+        newTax.setRate(BigDecimal.valueOf(.07));
         taxRepo.save(newTax);
 
         assertEquals(3, taxRepo.findAll().size());
@@ -54,7 +54,7 @@ public class TaxRepositoryTest {
     // Test Update
     @Test
     public void testUpdateTax() {
-        tax1.setRate(BigDecimal.valueOf(.055));
+        tax1.setRate(BigDecimal.valueOf(.05));
         taxRepo.save(tax1);
 
         Optional<Tax> taxFromRepo = taxRepo.findById(tax1.getState());
