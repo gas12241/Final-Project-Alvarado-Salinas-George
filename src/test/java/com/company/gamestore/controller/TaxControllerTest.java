@@ -40,11 +40,16 @@ public class TaxControllerTest {
 
     private Tax tax;
 
+    private Tax noRate;
+
     @Before
     public void setUp() throws Exception {
         tax = new Tax();
         tax.setState("NY");
         tax.setRate(BigDecimal.valueOf(.099));
+
+        noRate = new Tax();
+        noRate.setState("NY");
     }
 
     // Post "/taxes" CREATED
@@ -89,4 +94,12 @@ public class TaxControllerTest {
                 .andDo(print()).andExpect(status().isNoContent());
     }
 
+    @Test
+    public void shouldFailCreateTax() throws Exception {
+        String inputJson = mapper.writeValueAsString(noRate);
+        mockMvc.perform(post("/taxes")
+                        .content(inputJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isUnprocessableEntity());
+    }
 }
