@@ -13,10 +13,18 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Game Model that will be used in a Game Store Application.
+ */
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="game")
 public class Game implements  Serializable {
+
+    /**
+     * Instance variables for the Console Model. Includes
+     * Annotations that match restraints set by the database.
+     */
     @Id
     @Column(name = "game_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,63 +52,131 @@ public class Game implements  Serializable {
 
     private int quantity;
 
+    /**
+     * Getter for the gameId of the Game Object.
+     * @return Returns an int, the gameId of the Game Object.
+     */
     public int getGameId() {
         return gameId;
     }
 
+    /**
+     * Setter for the gameId of the Game Object.
+     * @param gameId int taken in to set the gameId of the Game Object.
+     */
     public void setGameId(int gameId) {
         this.gameId = gameId;
     }
 
+    /**
+     * Getter for the title of the Game Object.
+     * @return Returns a String, the title of the Game Object.
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Setter for the title of the Game Object.
+     * @param title String taken in to set the title of the
+     *              Game Object.
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Getter for the esrbRating of the Game Object.
+     * @return Returns a String, the esrbRating of the
+     * Game Object.
+     */
     public String getEsrbRating() {
         return esrbRating;
     }
 
+    /**
+     * Setter for the esrbRating of the Game Object.
+     * @param esrbRating String taken in to set the esrbRating
+     *                   of the Game Object.
+     */
     public void setEsrbRating(String esrbRating) {
         this.esrbRating = esrbRating;
     }
 
+    /**
+     * Getter for the price of the Game Object.
+     * @return Returns a BigDecimal, the price of the Game Object.
+     */
     public BigDecimal getPrice() {
         return price;
     }
 
+    /**
+     * Setter for the price of the Game Object.
+     * @param price BigDecimal taken in to set the price of the
+     *              Game Object.
+     */
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
+    /**
+     * Getter for the description of the Game object.
+     * @return Returns a String, the Description of the
+     *         Game Object.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Setter for the description of the Game Object.
+     * @param description String taken in to set the description
+     *                    of the Game Object.
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-
+    /**
+     * Getter for the studio of the Game Object.
+     * @return Returns a String, the studio of the Game Object.
+     */
     public String getStudio() {
         return studio;
     }
 
+    /**
+     * Setter for the studio of the Game Object.
+     * @param studio String taken in to set the studio of the
+     *               Game Object.
+     */
     public void setStudio(String studio) {
         this.studio = studio;
     }
 
+    /**
+     * Getter for the quantity of the Game Object.
+     * @return Returns the quantity of the Game Object.
+     */
     public int getQuantity() {
         return quantity;
     }
 
+    /**
+     * Setter for the quantity of the Game Object.
+     * @param quantity int taken in to set the quantity of the Game Object.
+     */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
+    /**
+     * equals() for the Game Object. Will be used for comparison.
+     * @param o Object o being used for comparison.
+     * @return Returns true if the Object calling the method equals
+     *         Object o, else it will return false.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,8 +185,29 @@ public class Game implements  Serializable {
         return getGameId() == game.getGameId() && getQuantity() == game.getQuantity() && Objects.equals(getTitle(), game.getTitle()) && Objects.equals(getEsrbRating(), game.getEsrbRating()) && Objects.equals(getPrice(), game.getPrice()) && Objects.equals(getDescription(), game.getDescription())  && Objects.equals(getStudio(), game.getStudio());
     }
 
+    /**
+     * hashCode() for the Game Object. Can be used for comparison.
+     * @return Returns the Game Object as an int.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getGameId(), getTitle(), getEsrbRating(), getPrice(), getDescription(), getStudio(), getQuantity());
+    }
+
+    /**
+     * toString() for the Game Object.
+     * @return Returns the Game Object as a String.
+     */
+    @Override
+    public String toString() {
+        return "Game{" +
+                "gameId=" + gameId +
+                ", title='" + title + '\'' +
+                ", esrbRating='" + esrbRating + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", studio='" + studio + '\'' +
+                ", quantity=" + quantity +
+                '}';
     }
 }

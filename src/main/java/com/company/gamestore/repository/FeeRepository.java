@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Fee Repository that will be used in a Game Store Application.
+ * FeeRepository that will be used in a Game Store Application.
  * Allows you to access the Database and work with the "fee" table.
  */
 @Repository

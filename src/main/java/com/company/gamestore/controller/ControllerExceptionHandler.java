@@ -14,21 +14,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-* handle JSR 303 validation errors within a @RestControllerAdvice component.
-*/
+/**
+ * ControllerExceptionHandler will handle JSR 303 validation
+ * errors within a @RestControllerAdvice component.
+ */
 @RestControllerAdvice
 public class ControllerExceptionHandler {
-
-    // MethodArgumentNotValidExceptions is the exception thrown when JSR 303 validation fails.
-    // Return a 422 Unprocessable Entity status
-    // This status means: the request was syntactically correct, but that the service can't process it because it doesn't meet some business rule.
-
     /**
      * MethodArgumentNotValidException is the exception thrown
      * when JSR303 validation fails.
-     * @param e
-     * @return
+     * @param e The error being thrown.
+     * @return Returns a ResponseEntity, made up of a List of
+     *         errors as well as an HttpStatus letting you know
+     *         the entity was unprocessable (request status 422)
+     *         due to business rules.
      */
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -53,9 +52,12 @@ public class ControllerExceptionHandler {
     }
 
     /**
-     *
-     * @param e
-     * @return
+     * IllegalArgumentNotValidException is the exception thrown
+     * when a method is passed an Illegal Argument.
+     * @param e The error being thrown.
+     * @return Returns a ResponseEntity, made up of an errorResponse
+     *         as well as an HttpStatus letting you know the entity
+     *         was unprocessable.
      */
     @ExceptionHandler(value = {IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)

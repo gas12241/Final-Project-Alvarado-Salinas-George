@@ -11,6 +11,11 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * InvoiceServiceLayer that will be used in a Game Store Application.
+ * Does the work to fill in the rest of the Invoice before saving it
+ * to the Database.
+ */
 @Component
 public class InvoiceServiceLayer {
 
@@ -21,7 +26,15 @@ public class InvoiceServiceLayer {
     private TshirtRepository tshirtRepository;
     private InvoiceRepository invoiceRepository;
 
-
+    /**
+     * Setup for the Invoice Service Layer
+     * @param consoleRepository Needed to check for Console Items.
+     * @param feeRepository Needed for total of Invoice.
+     * @param gameRepository Needed to check for Game Items.
+     * @param taxRepository Needed for total of Invoice.
+     * @param tshirtRepository Needed to check for Tshirt Items
+     * @param invoiceRepository Needed to save the invoices.
+     */
     @Autowired
     public InvoiceServiceLayer(
             ConsoleRepository consoleRepository,
@@ -39,23 +52,39 @@ public class InvoiceServiceLayer {
         this.invoiceRepository = invoiceRepository;
     }
 
+    /**
+     * Method to Get all Invoices from the Invoice Database.
+     * @return Returns a List of all the Invoices in the Database.
+     */
     public List<Invoice> findAll() {
         return invoiceRepository.findAll();
     }
 
-    ;
-
+    /**
+     * Method to find an Invoice by its Id.
+     * @param invoiceId Used to find a specific Invoice.
+     * @return Returns an Invoice by its given Id if it exists in the Database.
+     */
     public Invoice findById(int invoiceId) {
         Optional<Invoice> res = invoiceRepository.findById(invoiceId);
         return res.isPresent() ? res.get() : null;
     }
 
+    /**
+     * Method to find an Invoice with a given name.
+     * @param name name used to find specific Invoices.
+     * @return Returns a List of Invoices with the given name.
+     */
     public List<Invoice> findByName(String name) {
         return invoiceRepository.findByName(name);
     }
 
-    ;
-
+    /**
+     * Transactional Create Method for Invoices that will
+     * only go through IF all steps are finished.
+     * @param invoice Used to try to save to the Invoice Database.
+     * @return Returns the saved Invoice.
+     */
     @Transactional
     public Invoice save(Invoice invoice) {
         int itemId = invoice.getItemId();
@@ -157,7 +186,9 @@ public class InvoiceServiceLayer {
         return invoice;
     }
 
-
+    /**
+     * Service Layer Method to Delete all the Invoices in the Invoice Repository.
+     */
     public void deleteAll() {
         invoiceRepository.deleteAll();
     }
