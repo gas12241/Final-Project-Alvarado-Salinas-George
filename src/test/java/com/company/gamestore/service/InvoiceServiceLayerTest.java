@@ -127,5 +127,4 @@ public class InvoiceServiceLayerTest {
         Optional<Invoice> invoiceRes = invoiceRepository.findById(savedInvoice.getInvoiceId());
         assertEquals(invoiceRes.get(), savedInvoice);
     }
-
 }

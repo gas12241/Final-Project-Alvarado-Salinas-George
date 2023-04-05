@@ -173,6 +173,36 @@ public class TshirtControllerTest {
         mockMvc.perform(put("/tshirt").content(inputJson).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
+    }
 
+    @Test
+    public void shouldFailCreateTshirt() throws Exception {
+        Tshirt tshirt = new Tshirt();
+        tshirt.setColor("green");
+        tshirt.setDescription("nike t-shirt for children");
+        tshirt.setPrice(BigDecimal.valueOf(12.00));
+        // tshirt.setSize("large");
+        tshirt.setQuantity(100);
+        tshirt.setTshirtId(1);
+        String inputJson = mapper.writeValueAsString(tshirt);
+        when(tshirtRepository.save(tshirt)).thenReturn(tshirt);
+        mockMvc.perform(post("/tshirt").content(inputJson).contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void shouldFailGetTshirtById() throws Exception {
+        Tshirt tshirt = new Tshirt();
+        tshirt.setColor("green");
+        tshirt.setDescription("nike t-shirt for children");
+        tshirt.setPrice(BigDecimal.valueOf(12.00));
+        tshirt.setSize("large");
+        tshirt.setQuantity(100);
+        tshirt.setTshirtId(2);
+        when(tshirtRepository.save(tshirt)).thenReturn(tshirt);
+        mockMvc.perform(get("/tshirt/notValidId"))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }

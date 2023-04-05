@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
 
@@ -39,12 +40,16 @@ public class FeeControllerTest {
     private ObjectMapper mapper = new ObjectMapper();
 
     private Fee fee;
+    private Fee noFee;
 
     @Before
     public void setUp() throws Exception {
         fee = new Fee();
         fee.setFee(BigDecimal.valueOf(12.99));
         fee.setProductType("pizza");
+
+        noFee = new Fee();
+        noFee.setProductType("Produce");
     }
 
     @Test
@@ -85,5 +90,16 @@ public class FeeControllerTest {
     public void deleteFee() throws Exception {
         mockMvc.perform(delete("/fees/candy"))
                 .andDo(print()).andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void shouldFailCreateFeeAndThrowUnprocessableEntity() throws Exception {
+        String inputJson = mapper.writeValueAsString(noFee);
+
+        mockMvc.perform(post("/fees")
+                        .content(inputJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }
