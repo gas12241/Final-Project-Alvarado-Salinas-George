@@ -94,4 +94,26 @@ public class ConsoleControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void shouldFailPostConsole() throws Exception {
+        Console console = new Console();
+        console.setPrice(BigDecimal.valueOf(199.99));
+        console.setManufacturer("Games Live");
+        console.setProcessor("MMD 4000");
+        console.setQuantity(1);
+        console.setConsoleId(1);
+        String inputJson = mapper.writeValueAsString(console);
+
+        mockMvc.perform(post("/console").content(inputJson).contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void shouldFailGetConsoleById() throws Exception {
+        mockMvc.perform(get("/console/InvalidId"))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
 }

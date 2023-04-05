@@ -111,4 +111,51 @@ public class InvoiceControllerTest {
         mockMvc.perform(get("/invoices/name/George"))
                 .andDo(print()).andExpect(status().isOk());
     }
+
+    @Test
+    public void shouldFailCreateInvoice() throws Exception {
+        Tax tax = new Tax();
+        Fee fee = new Fee();
+        Tshirt tshirt = new Tshirt();
+
+
+        fee.setProductType("tshirt");
+        fee.setFee(BigDecimal.valueOf(.99));
+        when(feeRepository.findById(fee.getProductType())).thenReturn(Optional.of(fee));
+
+        tax.setState("PA");
+        tax.setRate(BigDecimal.valueOf(.075));
+        when(taxRepository.findById(tax.getState())).thenReturn(Optional.of(tax));
+
+        tshirt.setColor("green");
+        tshirt.setDescription("nike t-shirt for children");
+
+        tshirt.setPrice(BigDecimal.valueOf(12L, 2));
+
+        tshirt.setSize("large");
+        tshirt.setQuantity(100);
+        when(tshirtRepository.findById(tshirt.getTshirtId())).thenReturn(Optional.of(tshirt));
+
+        InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
+
+        invoiceViewModel.setStreet("1000 Happy Ave");
+        invoiceViewModel.setCity("Norfolk");
+        invoiceViewModel.setState(tax.getState());
+        invoiceViewModel.setZipcode("12345");
+        invoiceViewModel.setItemType("tshirt");
+        invoiceViewModel.setItemId(tshirt.getTshirtId());
+        invoiceViewModel.setQuantity(10);
+
+        String inputJson = mapper.writeValueAsString(invoiceViewModel);
+
+        mockMvc.perform(post("/invoices").content(inputJson).contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void shouldFailGetAnInvoiceByIdAndThrowUnprocessableEntity() throws Exception {
+        mockMvc.perform(get("/invoices/notARealId"))
+                .andDo(print()).andExpect(status().isUnprocessableEntity());
+    }
 }

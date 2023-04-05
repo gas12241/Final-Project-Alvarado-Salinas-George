@@ -26,7 +26,7 @@ public class ConsoleController {
      */
     @PostMapping(path = "/console")
     @ResponseStatus(HttpStatus.CREATED)
-    public Console createConsole(@RequestBody Console console) {
+    public Console createConsole(@RequestBody @Valid Console console) {
         return consoleRepo.save(console);
     }
 

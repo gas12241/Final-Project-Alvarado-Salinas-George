@@ -37,6 +37,8 @@ class GameControllerTest {
 
     private Game game;
 
+    private Game noTitleGame;
+
     @BeforeEach
     void setUp() {
         game = new Game();
@@ -48,6 +50,15 @@ class GameControllerTest {
                 "for the GameCube in 2005.");
         game.setStudio("Capcom");
         game.setQuantity(500);
+
+        noTitleGame = new Game();
+        noTitleGame.setEsrbRating("M");
+        noTitleGame.setPrice(BigDecimal.valueOf(59.99));
+        noTitleGame.setDescription("Resident Evil 4 is a survival horror game " +
+                "developed by Capcom Production Studio 4 and published by Capcom " +
+                "for the GameCube in 2005.");
+        noTitleGame.setStudio("Capcom");
+        noTitleGame.setQuantity(500);
     }
 
     @Test
@@ -127,5 +138,22 @@ class GameControllerTest {
         mockMvc.perform(delete("/game/1"))
                 .andDo(print())
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void failFindGameById() throws Exception {
+        String inputJson = mapper.writeValueAsString(game);
+        mockMvc.perform(MockMvcRequestBuilders.get("/game/wrongId")).andDo(print()).andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void failCreateGame() throws Exception {
+        String inputJson = mapper.writeValueAsString(noTitleGame);
+
+        mockMvc.perform(post("/game")
+                        .content(inputJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }
