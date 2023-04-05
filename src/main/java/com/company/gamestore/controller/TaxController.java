@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class TaxController {
      */
     @PostMapping("/taxes")
     @ResponseStatus(HttpStatus.CREATED)
-    public Tax createTax(@RequestBody Tax tax) {
+    public Tax createTax(@RequestBody @Valid Tax tax) {
         return taxRepo.save(tax);
     }
 
@@ -41,7 +42,7 @@ public class TaxController {
      */
     @PutMapping("/taxes")
     @ResponseStatus(HttpStatus.OK)
-    public Tax updateTax(@RequestBody Tax tax) {
+    public Tax updateTax(@RequestBody @Valid Tax tax) {
         return taxRepo.save(tax);
     }
 

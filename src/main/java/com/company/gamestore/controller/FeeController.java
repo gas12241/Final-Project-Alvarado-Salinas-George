@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class FeeController {
      */
     @PostMapping("/fees")
     @ResponseStatus(HttpStatus.CREATED)
-    public Fee createFee(@RequestBody Fee fee) {
+    public Fee createFee(@RequestBody @Valid Fee fee) {
         return feeRepo.save(fee);
     }
 
@@ -42,7 +43,7 @@ public class FeeController {
      */
     @PutMapping("/fees")
     @ResponseStatus(HttpStatus.OK)
-    public Fee updateFee(@RequestBody Fee fee) {
+    public Fee updateFee(@RequestBody @Valid Fee fee) {
         return feeRepo.save(fee);
     }
 

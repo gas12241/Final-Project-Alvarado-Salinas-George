@@ -7,10 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -32,16 +29,13 @@ public class Tax implements Serializable {
     @Size(max = 2, message = "State entry should be no more than two characters long.")
     private String state;
 
+
     @NotNull(message = "Rate cannot be null.")
     @DecimalMin(value = "0.00", inclusive = true, message = "Tax rate cannot be null and must be above 0.00.")
     @Digits(integer = 5, fraction = 3, message = "The tax has up to 8 numbers total with 3 after the decimal")
     private BigDecimal rate;
 
-    /**
-     * Empty Constructor. Instance variables will be set later.
-     */
-    public Tax() {
-    }
+
 
     /**
      * Getter for the state(Id) of the Tax Object.

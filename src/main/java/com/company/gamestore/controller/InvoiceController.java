@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -64,7 +65,7 @@ public class InvoiceController {
      */
     @PostMapping(path = "/invoices")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Invoice createInvoice(@RequestBody InvoiceViewModel invoiceViewModel) {
+    public Invoice createInvoice(@RequestBody @Valid InvoiceViewModel invoiceViewModel) {
         Invoice invoice = new Invoice();
         invoice.setName(invoiceViewModel.getName());
         invoice.setStreet(invoiceViewModel.getStreet());

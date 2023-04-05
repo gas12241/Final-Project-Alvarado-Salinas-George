@@ -1,6 +1,6 @@
 package com.company.gamestore.repository;
 
-import com.company.gamestore.model.Console;
+
 import com.company.gamestore.model.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
