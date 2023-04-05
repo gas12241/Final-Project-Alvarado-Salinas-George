@@ -9,13 +9,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *
+ */
 @RestController
 public class GameController {
 
     @Autowired
     GameRepository gameRepo;
 
-    // Create a Game
+    /**
+     *
+     * @param game
+     * @return
+     */
     @PostMapping(path = "/game")
     @ResponseStatus(HttpStatus.CREATED)
     public Game createGame(@RequestBody Game game) {

@@ -23,6 +23,13 @@ public class ControllerExceptionHandler {
     // MethodArgumentNotValidExceptions is the exception thrown when JSR 303 validation fails.
     // Return a 422 Unprocessable Entity status
     // This status means: the request was syntactically correct, but that the service can't process it because it doesn't meet some business rule.
+
+    /**
+     * MethodArgumentNotValidException is the exception thrown
+     * when JSR303 validation fails.
+     * @param e
+     * @return
+     */
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ResponseEntity<List<CustomErrorResponse>> controllerValidationError(MethodArgumentNotValidException e) {
@@ -45,6 +52,11 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(errorResponseList, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    /**
+     *
+     * @param e
+     * @return
+     */
     @ExceptionHandler(value = {IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ResponseEntity<CustomErrorResponse> serviceLayerValidationError(IllegalArgumentException e) {
