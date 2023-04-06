@@ -6,3 +6,17 @@ As a team, we will be responsible for designing and documenting the API, as well
 The authorization layer can be found in the auth_server branch in the repository.
 
 We are excited to work on this project and get real usage out of the things we've learned over the course of our bootcamp.
+
+
+Links for everything (The Links for the AWS stuff might be offline after a few days)
+
+Video:
+https://bit.ly/GradTeamVideo
+Presentation:
+https://bit.ly/GradTeamFinalPresentation
+Auth Server:
+https://bit.ly/Authorization_Server
+Gamestore Server:
+https://bit.ly/Game_Store_OpenAPI
+Source Code:
+https://bit.ly/Game_Store_Source
